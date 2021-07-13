@@ -1,0 +1,9 @@
+Minimal changes to the code in StoreData.py
+This was to avoid repition in inputting --board-id and --serial-port in console each time. 
+
+The Left Directory contains csv's for when I raised my left arm and recorded for 5 seconds.
+
+The Right Directory ...
+
+The Other Directory is me doing nothing in particular for 5 seconds. 
+

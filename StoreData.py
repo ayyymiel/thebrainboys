@@ -32,13 +32,13 @@ def main():
     parser.add_argument('--ip-protocol', type=int, help='ip protocol, check IpProtocolType enum', required=False,
                         default=0)
     parser.add_argument('--ip-address', type=str, help='ip address', required=False, default='')
-    parser.add_argument('--serial-port', type=str, help='serial port', required=False, default='')
+    parser.add_argument('--serial-port', type=str, help='serial port', required=False, default='COM6')
     parser.add_argument('--mac-address', type=str, help='mac address', required=False, default='')
     parser.add_argument('--other-info', type=str, help='other info', required=False, default='')
     parser.add_argument('--streamer-params', type=str, help='streamer params', required=False, default='')
     parser.add_argument('--serial-number', type=str, help='serial number', required=False, default='')
     parser.add_argument('--board-id', type=int, help='board id, check docs to get a list of supported boards',
-                        required=True)
+                        required=False, default=0)
     parser.add_argument('--file', type=str, help='file', required=False, default='')
     args = parser.parse_args()
 
@@ -55,7 +55,7 @@ def main():
 
     board = BoardShim(args.board_id, params)
 
-    ACTION = 'left'  # THIS IS THE ACTION YOU'RE THINKING
+    ACTION = 'other'  # THIS IS THE ACTION YOU'RE THINKING
 
     board.prepare_session()
 
@@ -66,13 +66,13 @@ def main():
 
     board.stop_stream()
 
-    savetxt('test4.csv', data, delimiter=' ')
+    savetxt('raw_data.csv', data, delimiter=' ')
     #keeps the 8 channels of data for 700 rows which is about 3 seconds of data (5 seconds gives about 1130-1185 rows)
     keyData = data[1:9, 1:701]
-    savetxt('test5.csv', keyData, delimiter=' ')
+    savetxt('key_data.csv', keyData, delimiter=' ')
 
     dataT=data.T
-    savetxt('test6.csv', dataT, delimiter=' ')
+    savetxt('data_T.csv', dataT, delimiter=' ')
 
     DataFilter.write_file(data, 'test3.csv', 'w')  # use 'a' for append mode
     restored_data = DataFilter.read_file('test3.csv')

@@ -1,3 +1,10 @@
 Comments in StoreData.py about Brainflow Version's function probs. 
 
-New Data Points: 5 per Folder.
+Update:
+  Now boasting directions:
+    Forward
+    Backward
+    Right 
+    Left
+    Other
+  Folders contain 5 data runs each.

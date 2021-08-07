@@ -1,6 +1,5 @@
 import math as m # temporary fix to undefined variable "m" error
-from random import seed
-from random import random
+from random import random, seed
 
 def start_network(main_input: int, hidden_neur: int, output_neur: int):
 
@@ -45,7 +44,7 @@ i_count = int(input('Input Count: '))
 h_count = int(input('Hidden Neuron Count: '))
 o_count = int(input('Output Neuron Count: '))
 
-seed(1) # start random numbers at 1 
+seed(1)
 get_the_network = start_network(i_count, h_count, o_count)
 
 for layers in get_the_network:

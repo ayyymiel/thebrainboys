@@ -45,7 +45,7 @@ i_count = int(input('Input Count: '))
 h_count = int(input('Hidden Neuron Count: '))
 o_count = int(input('Output Neuron Count: '))
 
-seed(1) # start random numbers at 1 
+seed(1) # generate the same random numbers every time code is run
 get_the_network = start_network(i_count, h_count, o_count)
 
 for layers in get_the_network:

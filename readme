@@ -1,7 +1,8 @@
+Note: Do not use KeyData here for thought collection. It is affected by head movement, head back to the main branch and use that instead.
 Comments in StoreData.py about Brainflow Version's function probs. 
 
 Update:
-  Now boasting directions:
+  Now boasting directions (for raw_data: includes acceleration data):
     Forward
     Backward
     Right 

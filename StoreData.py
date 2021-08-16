@@ -69,6 +69,7 @@ def main():
     savetxt('raw_data.csv', data, delimiter=' ')
     #keeps the 8 channels of data for 700 rows which is about 3 seconds of data (5 seconds gives about 1130-1185 rows)
     keyData = data[1:9, 1:701]
+    data = data[:,1:701]
     savetxt('key_data.csv', keyData, delimiter=' ')
 
     dataT=data.T

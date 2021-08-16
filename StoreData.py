@@ -55,7 +55,7 @@ def main():
 
     board = BoardShim(args.board_id, params)
 
-    ACTION = 'other'  # THIS IS THE ACTION YOU'RE THINKING
+    ACTION = 'backward'  # THIS IS THE ACTION YOU'RE THINKING
 
     board.prepare_session()
 
@@ -83,6 +83,8 @@ def main():
     print(restored_df)
 
     DataFilter.write_file(keyData, f"{int(time.time())}.npy", 'w')  # use 'a' for append mode
+    DataFilter.write_file(data, f"raw_{int(time.time())}.npy", 'w')  # use 'a' for append mode
+
     # Don't use latest brainflow version, it will cause grief: use 3.9.2
 
 if __name__ == "__main__":

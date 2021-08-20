@@ -1,5 +1,15 @@
 # master
 OpenBCI ML Implementation Capstone Project
 
+Comments for Backpropagation.py module:
 
-Update: Backpropagation.py module <<<<< FILL THIS IN AMIEL >>>>>
+Update:
+  Added 3 new functions that make up the forward propagation algorithm
+    - It can take in a single row of data and pass it through a series of steps that is required to get a final output at the end of the network.
+    - Please see the notes made in the Backpropagation.py module
+    - Example Input:
+      > [1 , 0, 3, -4]
+     Example Output:
+     > (fill this in Amiel)
+     Some Explanations:
+    

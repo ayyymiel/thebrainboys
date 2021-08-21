@@ -3,6 +3,7 @@ from random import seed
 from random import random
 from math import exp
 
+# ==== Initialize Neural Network ====
 def start_network(main_input: int, hidden_neur: int, output_neur: int):
 
     """
@@ -51,7 +52,7 @@ get_the_network = start_network(i_count, h_count, o_count)
 for layers in get_the_network:
     print(layers)
 
-# PROPAGATION
+# ==== Forward Propagation ====
 def activate_neur(weights, inputs):
     """
         This function generates the activation value that a neuron will have which will determine
@@ -106,6 +107,43 @@ def forward_propagation(network, row):
         inputs = new_inputs # changes from initial inputs to the new ones
     return inputs
 
+# ==== Back Propagation ====
+def transfer_derivative(output):
+    """
+        This function gets the transfer derivative of the sigmoid function. The derivative of any continuous function
+        is a slope. The value returned is the slope of the output value of the neuron        
+        The slope represents a "gradient descent method". To have the best possible output is to have the gradient descent 
+        line as flat as possible along the transfer function.
+        
+        Based on the slope, we can determine the error between the desired and the actual output
+
+        (I'M NOT SURE IF THIS IS RIGHT OR NOT, I THINK IT IS, I'M NOT ENTIRELY SURE TBH)
+
+        Links:
+            (an image)  https://www.google.com/url?sa=i&url=https%3A%2F%2Fblog.clairvoyantsoft.com%2Fthe-ascent-of-gradient-descent-23356390836f&psig=AOvVaw1My1CfaW5TBOZGz3rQnYpj&ust=1629650051320000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCOCN2djGwvICFQAAAAAdAAAAABAD
+            (thread explanation) https://intellipaat.com/community/17266/why-do-we-take-the-derivative-of-the-transfer-function-in-calculating-back-propagation-algorithm
+
+        parameter (output):
+            Takes the output from the output layer of the NN
+    """
+    t_derivative = output * (1 - output) # based on the Chain Rule
+    return t_derivative
+
+
+def backpropagate_error(network, desired):
+    for layer_index in reversed(range(len(network))): # loop through each layer in the network in reverse
+        layer = network[layer_index]
+        err_list = []
+        if layer_index != len(network)-1: # if the current layer is NOT the output layer
+            for neuron_index in range(len(layer)):
+                calc_error = 0.0
+                for neuron in network[layer_index + 1]: # loop through each neuron in the next layer after the current one 
+                    calc_error += (neuron['weights'][neuron_index] * neuron['delta']) # calculate the error of the hidden layer neuron output
+                    # above calculation is based on the weight of the neuron * the difference between expected output and actual (RE-VISIT)
+                err_list.append(calc_error)
+
+
+# ==== START ====
 random_input = [1, 0, 3, -4] # temporary data row
 output_vals = forward_propagation(get_the_network, random_input)
-print(output_vals)
+# print(output_vals)

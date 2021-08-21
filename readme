@@ -11,5 +11,12 @@ Update:
       > [1 , 0, 3, -4]
      Example Output:
      > (fill this in Amiel)
-     Some Explanations:
+    - Sigmoid function
+      > Adds "Non-Linearity" in the model as that level of complexity is required to determine
+        what value should and should not be passed
+      > The function exists between 0 and 1 which is representative of probability
+    - Example Output
+      > [1.4765418851268763, 1.3714774431052756]
+        Based on if the output layer had 2 neurons, hence 2 output values
+     
     

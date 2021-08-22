@@ -138,10 +138,18 @@ def backpropagate_error(network, desired):
             for neuron_index in range(len(layer)):
                 calc_error = 0.0
                 for neuron in network[layer_index + 1]: # loop through each neuron in the next layer after the current one 
-                    calc_error += (neuron['weights'][neuron_index] * neuron['delta']) # calculate the error of the hidden layer neuron output
+                    calc_error += neuron['weights'][neuron_index] * neuron['delta'] # calculate the error of the hidden layer neuron output
                     # above calculation is based on the weight of the neuron * the difference between expected output and actual (RE-VISIT)
                 err_list.append(calc_error)
-
+        else:
+            for neuron_index in range(len(layer)):
+                neuron = layer[neuron_index]
+                out_error = 0.0
+                out_error += desired[neuron_index] - neuron['output']
+                err_list.append(out_error)
+        for neuron_index in range(len(layer)):
+            neuron = layer[neuron_index]
+            neuron['delta'] = err_list[neuron_index] * transfer_derivative(neuron['output'])
 
 # ==== START ====
 random_input = [1, 0, 3, -4] # temporary data row

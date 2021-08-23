@@ -19,13 +19,12 @@ tf.keras.utils.normalize(X, axis=-1, order=2) #L2 norm
 model = Sequential()
 
 #conv layer
-model.add(Conv1D(32, (3),  input_shape=X.shape[1:])) ##32 units, unit size, input shape
+model.add(Conv1D(64, (5),  input_shape=X.shape[1:])) ##32 units, unit size, input shape
 model.add(Activation('relu'))
-
 
 model.add(Conv1D(32, (2)))
 model.add(Activation('relu'))
-model.add(MaxPooling1D(pool_size=(2)))
+#model.add(MaxPooling1D(pool_size=(2))
 
 model.add(Conv1D(32, (2)))
 model.add(Activation('relu'))
@@ -34,16 +33,14 @@ model.add(Flatten())
 
 model.add(Dense(256))
 
-model.add(Dense(3))
+model.add(Dense(5))
 model.add(Activation('softmax'))
 
 
 model.compile(loss="categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
 model.summary()
 
-model.fit(X, y, batch_size=5, epochs=5, validation_split=0.4)
+model.fit(X, y, batch_size=5, epochs=5,validation_split=0.35)
 
 model.save("CNN1.model")
-
-
 

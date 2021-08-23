@@ -43,9 +43,11 @@ def start_network(main_input: int, hidden_neur: int, output_neur: int):
 
     return network # return the layer information
 
+# ---- REMOVE THIS BLOCK ----
 i_count = int(input('Input Count: '))
 h_count = int(input('Hidden Neuron Count: '))
 o_count = int(input('Output Neuron Count: '))
+# ---- REMOVE THIS BLOCK ----
 
 get_the_network = start_network(i_count, h_count, o_count)
 
@@ -131,23 +133,33 @@ def transfer_derivative(output):
 
 
 def backpropagate_error(network, desired):
-    for layer_index in reversed(range(len(network))): # loop through each layer in the network in reverse
+    """
+        This function is in charge of backpropagating the error through the network in order to see the differences in outputs between each neuron. These differences ultimately decide
+        the accuracy of the model once it has been fully trained
+        
+        It is broken up by iterating through each layer and assigning the error differences to each neuron in them
+        
+        It has 2 different conditions to when assigning the error. The first being the hidden layers, the second being the output layer.
+        
+        (add parameters)
+    """
+    for layer_index in reversed(range(len(network))): # loop through each layer in the network in reverse (starting from the output layer)
         layer = network[layer_index]
         err_list = []
         if layer_index != len(network)-1: # if the current layer is NOT the output layer
             for neuron_index in range(len(layer)):
                 calc_error = 0.0
-                for neuron in network[layer_index + 1]: # loop through each neuron in the next layer after the current one 
+                for neuron in network[layer_index + 1]: # loop through each neuron in the next layer AFTER (double-check this) the current one 
                     calc_error += neuron['weights'][neuron_index] * neuron['delta'] # calculate the error of the hidden layer neuron output
-                    # above calculation is based on the weight of the neuron * the difference between expected output and actual (RE-VISIT)
+                    # above calculation is based on the weight of the neuron * the difference between expected output and actual OF THAT NEURON (RE-VISIT)
                 err_list.append(calc_error)
         else:
             for neuron_index in range(len(layer)):
                 neuron = layer[neuron_index]
                 out_error = 0.0
-                out_error += desired[neuron_index] - neuron['output']
+                out_error += desired[neuron_index] - neuron['output'] 
                 err_list.append(out_error)
-        for neuron_index in range(len(layer)):
+        for neuron_index in range(len(layer)): # loop through each neuron in the current layer and assign delta values between each attached neuron (double-check)
             neuron = layer[neuron_index]
             neuron['delta'] = err_list[neuron_index] * transfer_derivative(neuron['output'])
 
@@ -155,3 +167,5 @@ def backpropagate_error(network, desired):
 random_input = [1, 0, 3, -4] # temporary data row
 output_vals = forward_propagation(get_the_network, random_input)
 # print(output_vals)
+
+# FOR AMIEL, do variable checking of neuron values while running through the program to see what is being assigned to what

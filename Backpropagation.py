@@ -141,7 +141,11 @@ def backpropagate_error(network, desired):
         
         It has 2 different conditions to when assigning the error. The first being the hidden layers, the second being the output layer.
         
-        (add parameters)
+        parameter (network):
+            Takes the generated output
+         
+        parameter (desired):
+            Represents the desired output (the actual output we want from the network)
     """
     for layer_index in reversed(range(len(network))): # loop through each layer in the network in reverse (starting from the output layer)
         layer = network[layer_index]

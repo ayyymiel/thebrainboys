@@ -18,5 +18,7 @@ Update:
     - Example Output
       > [1.4765418851268763, 1.3714774431052756]
         Based on if the output layer had 2 neurons, hence 2 output values
-     
-    
+
+  @Eric 
+    - updated the other NN modules (utilizing the Convolutional method)
+    - added the spider robot contorl script (QuadBotTestV3.ino)

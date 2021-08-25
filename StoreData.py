@@ -55,34 +55,34 @@ def main():
 
     board = BoardShim(args.board_id, params)
 
-    ACTION = 'right'  # THIS IS THE ACTION YOU'RE THINKING
+    ACTION = 'other'  # THIS IS THE ACTION YOU'RE THINKING
 
     board.prepare_session()
 
     board.start_stream(45000, args.streamer_params)  # ring buffer int
-    time.sleep(5)  # time streamed in seconds
+    time.sleep(10)  # time streamed in seconds (+5)
 
     data = board.get_board_data() #This is a numpy.ndarray
 
     board.stop_stream()
 
-    savetxt('raw_data.csv', data, delimiter=' ')
+    # savetxt('raw_data.csv', data, delimiter=' ')
     #keeps the 8 channels of data for 700 rows which is about 3 seconds of data (5 seconds gives about 1130-1185 rows)
-    keyData = data[1:9, 1:701]
-    savetxt('key_data.csv', keyData, delimiter=' ')
+    # keyData = data[1:9, 1:701]
+    # savetxt('key_data.csv', keyData, delimiter=' ')
 
-    dataT=data.T
-    savetxt('data_T.csv', dataT, delimiter=' ')
+    # dataT=data.T
+    # savetxt('data_T.csv', dataT, delimiter=' ')
 
-    DataFilter.write_file(data, 'test3.csv', 'w')  # use 'a' for append mode
-    restored_data = DataFilter.read_file('test3.csv')
-    restored_df = pd.DataFrame(np.transpose(restored_data))
+    # DataFilter.write_file(data, 'test3.csv', 'w')  # use 'a' for append mode
+    # restored_data = DataFilter.read_file('test3.csv')
+    # restored_df = pd.DataFrame(np.transpose(restored_data))
 
     print(data)
-    print(keyData)
-    print(restored_df)
+    # print(keyData)
+    # print(restored_df)
 
-    DataFilter.write_file(keyData, f"{int(time.time())}.npy", 'w')  # use 'a' for append mode
+    DataFilter.write_file(data, f"{int(time.time())}.npy", 'w')  # use 'a' for append mode
     # Don't use latest brainflow version, it will cause grief: use 3.9.2
 
 if __name__ == "__main__":

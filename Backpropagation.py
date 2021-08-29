@@ -142,7 +142,7 @@ def backpropagate_error(network, desired):
         It has 2 different conditions to when assigning the error. The first being the hidden layers, the second being the output layer.
         
         parameter (network):
-            Takes the generated output
+            Takes the generated network
          
         parameter (desired):
             Represents the desired output (the actual output we want from the network)
@@ -167,9 +167,38 @@ def backpropagate_error(network, desired):
             neuron = layer[neuron_index]
             neuron['delta'] = err_list[neuron_index] * transfer_derivative(neuron['output'])
 
+# ==== POST ERROR ASSESSMENT ====
+# ==== Update/Change Weights ====
+def update_weights(network, row, learning_rate):
+    """
+        This function updates the weights of each of the neurons based on the error of each neuron and a desired learning rate
+
+        The learning rate is a varying percentage which decides the speed of the learning process and accuracy of the NN. If the learning rate is set to a low
+        value, then training will take much longer than if the rate were set to a higher number. Although having a slower learning rate can greatly increase the
+        NN's ability to predict. 
+        The set rate (in %) is the value that the weights will update by
+
+        parameter (network):
+            Takes the generated network
+        
+        parameter (row):
+            Rows from the dataset as an index (I think)
+        
+        parameter (learning rate):
+            The percent that the weights are changed by
+    """
+    for layer_index in range(len(network)):
+        inputs = row[:-1] # all rows from the dataset
+        if layer_index != 0: # if not the input layer
+            inputs = [neuron['output'] for neuron in network[layer_index - 1]] # set the neuron outputs as the new inputs 
+        for neuron in network[layer_index]:
+            for neuron_index in range(len(inputs)):
+                neuron['weights'][neuron_index] += learning_rate * neuron['delta'] * inputs[neuron_index] 
+            neuron['weights'][-1] += learning_rate * neuron['delta']
+
 # ==== START ====
 random_input = [1, 0, 3, -4] # temporary data row
 output_vals = forward_propagation(get_the_network, random_input)
 # print(output_vals)
 
-# FOR AMIEL, do variable checking of neuron values while running through the program to see what is being assigned to what
+

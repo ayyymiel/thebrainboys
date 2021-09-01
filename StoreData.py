@@ -55,7 +55,7 @@ def main():
 
     board = BoardShim(args.board_id, params)
 
-    ACTION = 'other'  # THIS IS THE ACTION YOU'RE THINKING
+    ACTION = 'backward'  # THIS IS THE ACTION YOU'RE THINKING
 
     board.prepare_session()
 

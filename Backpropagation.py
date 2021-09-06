@@ -3,6 +3,8 @@ from random import seed
 from random import random
 from math import exp
 
+# Code reference: https://machinelearningmastery.com/implement-backpropagation-algorithm-scratch-python/
+
 # ==== Initialize Neural Network ====
 def start_network(main_input: int, hidden_neur: int, output_neur: int):
 
@@ -17,8 +19,6 @@ def start_network(main_input: int, hidden_neur: int, output_neur: int):
 
             parameter (output_neur): int
                 Specifies the number of neurons in the output layer
-
-            Code reference: https://machinelearningmastery.com/implement-backpropagation-algorithm-scratch-python/
     """
 
     # network list
@@ -42,17 +42,6 @@ def start_network(main_input: int, hidden_neur: int, output_neur: int):
     network.append(output_layer)
 
     return network # return the layer information
-
-# ---- REMOVE THIS BLOCK ----
-i_count = int(input('Input Count: '))
-h_count = int(input('Hidden Neuron Count: '))
-o_count = int(input('Output Neuron Count: '))
-# ---- REMOVE THIS BLOCK ----
-
-get_the_network = start_network(i_count, h_count, o_count)
-
-for layers in get_the_network:
-    print(layers)
 
 # ==== Forward Propagation ====
 def activate_neur(weights, inputs):
@@ -147,29 +136,29 @@ def backpropagate_error(network, desired):
         parameter (desired):
             Represents the desired output (the actual output we want from the network)
     """
-    for layer_index in reversed(range(len(network))): # loop through each layer in the network in reverse (starting from the output layer)
+    for layer_index in reversed(range(len(network))): # loop through each layer in the network in reverse
         layer = network[layer_index]
         err_list = []
         if layer_index != len(network)-1: # if the current layer is NOT the output layer
             for neuron_index in range(len(layer)):
                 calc_error = 0.0
-                for neuron in network[layer_index + 1]: # loop through each neuron in the next layer AFTER (double-check this) the current one 
+                for neuron in network[layer_index + 1]: # loop through each neuron in the next layer after the current one 
                     calc_error += neuron['weights'][neuron_index] * neuron['delta'] # calculate the error of the hidden layer neuron output
-                    # above calculation is based on the weight of the neuron * the difference between expected output and actual OF THAT NEURON (RE-VISIT)
+                    # above calculation is based on the weight of the neuron * the difference between expected output and actual (RE-VISIT)
                 err_list.append(calc_error)
         else:
-            for neuron_index in range(len(layer)):
+            for neuron_index in range(len(layer)): # loop through each neuron in the output layer and append the error
                 neuron = layer[neuron_index]
                 out_error = 0.0
-                out_error += desired[neuron_index] - neuron['output'] 
+                out_error += desired[neuron_index] - neuron['output']
                 err_list.append(out_error)
-        for neuron_index in range(len(layer)): # loop through each neuron in the current layer and assign delta values between each attached neuron (double-check)
+        for neuron_index in range(len(layer)):
             neuron = layer[neuron_index]
-            neuron['delta'] = err_list[neuron_index] * transfer_derivative(neuron['output'])
+            neuron['delta'] = err_list[neuron_index] * transfer_derivative(neuron['output']) # error difference 
 
-# ==== POST ERROR ASSESSMENT ====
-# ==== Update/Change Weights ====
-def update_weights(network, row, learning_rate):
+# ==== POST-ERROR ANALYSIS ====
+# ==== Weight Updates ====
+def update_weights(network, data_row, learn_rate):
     """
         This function updates the weights of each of the neurons based on the error of each neuron and a desired learning rate
 
@@ -177,6 +166,7 @@ def update_weights(network, row, learning_rate):
         value, then training will take much longer than if the rate were set to a higher number. Although having a slower learning rate can greatly increase the
         NN's ability to predict. 
         The set rate (in %) is the value that the weights will update by
+            neuron['delta'] = err_list[neuron_index] * transfer_derivative(neuron['output']) # error difference 
 
         parameter (network):
             Takes the generated network
@@ -188,17 +178,44 @@ def update_weights(network, row, learning_rate):
             The percent that the weights are changed by
     """
     for layer_index in range(len(network)):
-        inputs = row[:-1] # all rows from the dataset
-        if layer_index != 0: # if not the input layer
-            inputs = [neuron['output'] for neuron in network[layer_index - 1]] # set the neuron outputs as the new inputs 
+        inputs = data_row[:-1]
+        if layer_index != 0:
+            inputs = [neuron['output'] for neuron in network[layer_index-1]]
         for neuron in network[layer_index]:
             for neuron_index in range(len(inputs)):
-                neuron['weights'][neuron_index] += learning_rate * neuron['delta'] * inputs[neuron_index] 
-            neuron['weights'][-1] += learning_rate * neuron['delta']
+                neuron['weights'][neuron_index] += learn_rate * neuron['delta'] * inputs[neuron_index] # hidden layer weights
+            neuron['weights'][-1] += learn_rate * neuron['delta'] # output layer weights
 
-# ==== START ====
-random_input = [1, 0, 3, -4] # temporary data row
-output_vals = forward_propagation(get_the_network, random_input)
-# print(output_vals)
+# ==== Training the Network ====
+def train(network, dataset, learn_rate, epochs, n_outputs):
+    for epoch_index in range(epochs):
+        progression = 0
+        for row in dataset:
+            outputs = forward_propagation(network, row)
+            expected = [0 for error_index in range(n_outputs)] # hot encoding, look into this
+            expected[row[-1]] = 1 # hot encoding uses binary assigning
+            progression += sum([(expected[error_index] - outputs[error_index]) ** 2 for error_index in range(len(expected))])
 
+            backpropagate_error(network, expected)
+            update_weights(network, row, learn_rate)
+        print(f'epoch = {epoch_index}, learning = {learn_rate}, error = {progression}')
+        
+# !!!! TESTING !!!!
 
+data = [[2.7810836,2.550537003,0],
+    [1.465489372,2.362125076,0],
+    [3.396561688,4.400293529,0],
+    [1.38807019,1.850220317,0],
+    [3.06407232,3.005305973,0],
+    [7.627531214,2.759262235,1],
+    [5.332441248,2.088626775,1],
+    [6.922596716,1.77106367,1],
+    [8.675418651,-0.242068655,1],
+    [7.673756466,3.508563011,1]]
+
+count_inputs = len(data[0]) - 1
+count_outputs = len(set([row_index[-1] for row_index in data]))
+get_network = start_network(count_inputs, 2, count_outputs)
+train(get_network, data, 0.5, 50, count_outputs)
+for layer in get_network:
+    print(layer)

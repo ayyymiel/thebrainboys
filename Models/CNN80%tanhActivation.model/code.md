@@ -109,11 +109,11 @@ history=model.fit(X_train, y_train, batch_size=5, epochs=50,validation_data=(X_t
 
 model.save("CNN1.model")
 
-# list all data in history
+#list all data in history
 
 print(history.history.keys())
 
-# summarize history for accuracy
+#summarize history for accuracy
 
 plt.plot(history.history['accuracy'])
 
@@ -131,7 +131,7 @@ plt.show()
 
 """
 
-# summarize history for loss
+#summarize history for loss
 
 plt.plot(history.history['loss'])
 

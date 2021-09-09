@@ -3,7 +3,7 @@ import subprocess
 cmd = 'python StoreData.py'
 
 # The number of runs you want.
-runs = 5
+runs = 10
 
 
 # Runs the StoreData.py 'runs' amount of times. 

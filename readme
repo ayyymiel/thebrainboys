@@ -1,9 +1,9 @@
-# master
-OpenBCI ML Implementation Capstone Project
 
-Comments for Backpropagation.py module:
+#OpenBCI ML Implementation Capstone Project
 
-Update:
+##Comments for Backpropagation.py module:
+
+Updates:
   Added 3 new functions that make up the forward propagation algorithm
     - It can take in a single row of data and pass it through a series of steps that is required to get a final output at the end of the network.
     - Please see the notes made in the Backpropagation.py module
@@ -19,11 +19,11 @@ Update:
       > [1.4765418851268763, 1.3714774431052756]
         Based on if the output layer had 2 neurons, hence 2 output values
 
-  @Eric 
+  ###@Eric 
     - updated the other NN modules (utilizing the Convolutional method)
     - added the spider robot contorl script (QuadBotTestV3.ino)
 
-  @zoot-io
+  ###@zoot-io
     - updated StoreData.py
       - no more side jobs (data trimming or filtering)
       - increased data collection time to 10 seconds

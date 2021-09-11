@@ -200,13 +200,27 @@ def train(network, dataset, learn_rate, epochs, n_outputs):
             backpropagate_error(network, expected)
             update_weights(network, row, learn_rate)
         print(f'epoch = {epoch_index}, learning = {learn_rate}, error = {progression}')
-        
-# !!!! TESTING !!!!
-data = [[19086.512218,33289.637660,-109066.387602,-127814.405002,-140828.238824,-106471.193608,-119727.096823,-121689.691745]]
 
-count_inputs = len(data[0]) - 1
-count_outputs = len(set([row_index[-1] for row_index in data]))
-get_network = start_network(count_inputs, 2, count_outputs)
-train(get_network, data, 0.1, 20, count_outputs)
-for layer in get_network:
-    print(layer)
+
+def predict(network, row):
+    outputs = forward_propagation(network, row)
+    return outputs.index(max(outputs))
+
+# !!!! TESTING !!!!
+data = [[2.7810836,2.550537003,0],
+	[1.465489372,2.362125076,0],
+	[3.396561688,4.400293529,0],
+	[1.38807019,1.850220317,0],
+	[3.06407232,3.005305973,0],
+	[7.627531214,2.759262235,1],
+	[5.332441248,2.088626775,1],
+	[6.922596716,1.77106367,1],
+	[8.675418651,-0.242068655,1],
+	[7.673756466,3.508563011,1]]
+
+network = [[{'weights': [-1.482313569067226, 1.8308790073202204, 1.078381922048799]}, {'weights': [0.23244990332399884, 0.3621998343835864, 0.40289821191094327]}],
+	[{'weights': [2.5001872433501404, 0.7887233511355132, -1.1026649757805829]}, {'weights': [-2.429350576245497, 0.8357651039198697, 1.0699217181280656]}]]
+
+for row in data:
+    prediction = predict(network, row)
+    print(f'Expected: {row[-1]}, Got: {prediction}')

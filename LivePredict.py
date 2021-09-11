@@ -15,7 +15,7 @@ from tensorflow.keras.layers import Dense, Dropout, Activation, Flatten, Conv1D,
 import pickle
 
 action = ["Backward", "Forward", "Left", "Other", "Right"]
-ser = serial.Serial("COM6", 9600, timeout = 1) #Change your port name COM... and your baudrate
+ser = serial.Serial("COM4", 9600, timeout = 1) #Change your port name COM... and your baudrate
 BoardShim.enable_dev_board_logger()
 
 parser = argparse.ArgumentParser()
@@ -63,7 +63,7 @@ def main():
     data = data[1:9, 1:701] #reshaping data into same format
     data = np.array(data).reshape(-1, 8, 700)
 
-    model = tf.keras.models.load_model("CNN1.model")
+    model = tf.keras.models.load_model("CNN-30+%.model")
 
     prediction = model.predict(data)
 
@@ -84,8 +84,6 @@ def main():
         ser.write(b'f')
     elif x== 2:
         ser.write(b'l')
-
-
     elif x ==  4:
         ser.write(b'r')
     else:

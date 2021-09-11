@@ -68,21 +68,16 @@ def main():
 
     data = data[1:9, 1:701] #reshaping data into same format
     data = np.array(data).reshape(-1, 8, 700)
-
+    n_samples = len(data)
+    data = data.reshape((n_samples, -1))
     scaler = MinMaxScaler()  # Default behavior is to scale to [0,1]
     data = scaler.fit_transform(data)
 
     prediction = clf.predict(data)
 
-    counter =-1
-
-    for ACTION in np.nditer(prediction):
-        counter+=1
-        if ACTION ==1.0:
-            x=counter
 
     print("The action you are thinking is: ", prediction)
-    print("The action you are thinking is: ", action[x])
+    #print("The action you are thinking is: ", action[x])
 
 
 if __name__ == "__main__":

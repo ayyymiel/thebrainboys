@@ -72,6 +72,9 @@ def main():
     keyData = data[1:9, 1:701]
     # savetxt('key_data.csv', keyData, delimiter=' ')
 
+    # Check data
+    check_data(keyData)
+
     # dataT=data.T
     # savetxt('data_T.csv', dataT, delimiter=' ')
 
@@ -86,6 +89,12 @@ def main():
     # DataFilter.write_file(data, f"{int(time.time())}.npy", 'w')  # use 'a' for append mode
     DataFilter.write_file(keyData, f"{int(time.time())}.npy", 'w')  # use 'a' for append mode
     # Don't use latest brainflow version, it will cause grief: use 3.9.2
+
+
+def check_data(incoming_data):
+    if (incoming_data.shape != (8, 700)):
+        print("Sample too small", incoming_data.shape)
+
 
 if __name__ == "__main__":
     main()

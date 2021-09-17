@@ -1,0 +1,48 @@
+#normalize data
+tf.keras.utils.normalize(X_train, axis=-1, order=2) #L2 norm
+
+
+#initialize model
+model = Sequential()
+
+#conv layer
+model.add(Conv1D(256,  1, input_shape=X_train.shape[1:])) ##32 units, kernel size, input shape
+model.add(Activation('relu'))
+
+model.add(Conv1D(512, 2))
+model.add(Activation('relu'))
+
+model.add(Conv1D(1024, 2))
+model.add(Activation('relu'))
+
+model.add(Conv1D(1024, 2))
+model.add(Activation('relu'))
+
+model.add(Conv1D(512, 2))
+model.add(Activation('relu'))
+
+model.add(Conv1D(256, 1))
+model.add(Activation('relu'))
+#model.add(MaxPooling1D(pool_size=2))
+
+model.add(Conv1D(128, 1))
+model.add(Activation('relu'))
+model.add(MaxPooling1D(pool_size=2))
+
+model.add(Flatten())
+
+model.add(Dense(512))
+model.add(Dense(256))
+model.add(Dense(128))
+#model.add(Dense(64))
+#model.add(Dense(32))
+#model.add(Dense(16))
+
+
+model.add(Dense(5))
+model.add(Activation('softmax'))
+
+model.compile(loss="categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
+model.summary()
+
+history=model.fit(X_train, y_train, batch_size=10, epochs=35,validation_data=(X_test, y_test))

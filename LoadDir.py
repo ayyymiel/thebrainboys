@@ -7,7 +7,7 @@ import pickle
 from sklearn.model_selection import train_test_split
 
 #dir = 'C:/Users/Eric-/OneDrive/Desktop/Cap/pythonProject/ActionData/'
-dir = 'C:/Users/Eric-/OneDrive/Desktop/Cap/pythonProject/ActionsData/'
+dir = 'TrimmedData/'
 #categories = ["Back", "Forward", "Left", "Other", "Right"]
 categories = ["Backward", "Forward", "Left", "Other", "Right"]
 
@@ -41,7 +41,7 @@ def createTrainingData():
 createTrainingData()
 print(len(trainingData))
 
-random.shuffle(trainingData) #randomize the training data
+# random.shuffle(trainingData) #randomize the training data
 
 X=[] #feature
 y=[] #label
@@ -59,13 +59,13 @@ for i in range(499):
 """
 X=np.array(X).reshape(-1, 8,700)
 #X=np.array(X).reshape(-1, 23,700)
-np.save("X.npy",X)
-np.save("y.npy",y )
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.4)
+np.save("X_b.npy",X)
+# np.save("y.npy",y )
+X_train, X_test = train_test_split(X, test_size=0.4)
 
 #y=np.array(y).reshape(5)
-np.save("X_train.npy",X_train)
-np.save("y_train.npy",y_train )
+np.save("X_train_b.npy", X_train)
+# np.save("y_train.npy",y_train )
 
-np.save("X_test.npy",X_test)
-np.save("y_test.npy",y_test)
+np.save("X_test_b.npy", X_test)
+# np.save("y_test.npy",y_test)

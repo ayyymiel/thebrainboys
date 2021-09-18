@@ -69,7 +69,7 @@ def main():
 
     # savetxt('raw_data.csv', data, delimiter=' ')
     #keeps the 8 channels of data for 700 rows which is about 3 seconds of data (5 seconds gives about 1130-1185 rows)
-    keyData = data[1:9, 1:701]
+    keyData = data[:, 1:701]
     # savetxt('key_data.csv', keyData, delimiter=' ')
 
     # Check data
@@ -82,7 +82,7 @@ def main():
     # restored_data = DataFilter.read_file('test3.csv')
     # restored_df = pd.DataFrame(np.transpose(restored_data))
 
-    print(data)
+    print(keyData)
     # print(keyData)
     # print(restored_df)
 
@@ -92,7 +92,7 @@ def main():
 
 
 def check_data(incoming_data):
-    if (incoming_data.shape != (8, 700)):
+    if (incoming_data.shape != (24, 700)):
         print("Sample too small", incoming_data.shape)
 
 

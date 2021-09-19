@@ -21,7 +21,7 @@ def activate(weights, inputs):
 
 # Transfer neuron activation
 def transfer(activation):
-	return 1.0 / (1.0 + exp(-activation))
+	return 1.0 / (1.0 + np.exp(-activation))
 
 # Forward propagate input to a network output
 def forward_propagate(network, row):
@@ -82,22 +82,21 @@ def train_network(network, train, l_rate, n_epoch, n_outputs):
 			update_weights(network, row, l_rate)
 		print('>epoch=%d, lrate=%.3f, error=%.3f' % (epoch, l_rate, sum_error))
 
-# Test training backprop algorithm
 
-dataset = np.array([[[2.7810836,2.550537003,0],[1, 0, 0, 0, 0]],
-	[[1.465489372,2.362125076],[1, 0, 0, 0, 0]],
-	[[3.396561688,4.400293529],[1, 0, 0, 0, 0]],
-	[[1.38807019,1.850220317],[1, 0, 0, 0, 0]],
-	[[3.06407232,3.005305973],[1, 0, 0, 0, 0]],
-	[[7.627531214,2.759262235],[0, 1, 0, 0, 0]],
-	[[5.332441248,2.088626775],[0, 1, 0, 0, 0]],
-	[[6.922596716,1.77106367],[0, 1, 0, 0, 0,]],
-	[[8.675418651,-0.242068655],[0, 1, 0, 0, 0]],
-	[[7.673756466,3.508563011],[0, 1, 0, 0, 0]]])
+# Test training backprop algorithm
+load_npy = np.load('new_X_array.npy')
+dataset = np.ndarray.tolist(load_npy)
 
 n_inputs = len(dataset[0]) - 1
-n_outputs = len(set([dataset[-1] for row in dataset]))
+
+outputs_list = []
+for row in range(len(dataset)):
+	outputs_row = dataset[row]
+	outputs_end = outputs_row[-1]
+	outputs_list.append(outputs_end)
+
+n_outputs = len(outputs_list)
 network = initialize_network(n_inputs, 2, n_outputs)
-train_network(network, dataset, 0.5, 20, n_outputs)
+train_network(network, dataset, 0.2, 50, n_outputs)
 for layer in network:
 	print(layer)

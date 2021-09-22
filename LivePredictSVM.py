@@ -1,7 +1,7 @@
 import argparse
 import time
 import numpy as np
-import serial
+# import serial
 
 import brainflow
 from brainflow.board_shim import BoardShim, BrainFlowInputParams, BoardIds
@@ -17,7 +17,7 @@ import _pickle as cPickle
 from sklearn.preprocessing import MinMaxScaler
 
 action = ["Backward", "Forward", "Left", "Other", "Right"]
-ser = serial.Serial("COM4", 9600, timeout = 1) #Change your port name COM... and your baudrate
+# ser = serial.Serial("COM6", 9600, timeout = 1) #Change your port name COM... and your baudrate
 BoardShim.enable_dev_board_logger()
 
 parser = argparse.ArgumentParser()
@@ -28,7 +28,7 @@ parser.add_argument('--ip-port', type=int, help='ip port', required=False, defau
 parser.add_argument('--ip-protocol', type=int, help='ip protocol, check IpProtocolType enum', required=False,
                     default=0)
 parser.add_argument('--ip-address', type=str, help='ip address', required=False, default='')
-parser.add_argument('--serial-port', type=str, help='serial port', required=False, default='COM8')
+parser.add_argument('--serial-port', type=str, help='serial port', required=False, default='COM6')
 parser.add_argument('--mac-address', type=str, help='mac address', required=False, default='')
 parser.add_argument('--other-info', type=str, help='other info', required=False, default='')
 parser.add_argument('--streamer-params', type=str, help='streamer params', required=False, default='')
@@ -81,6 +81,6 @@ def main():
 
 
 if __name__ == "__main__":
-    while(True==True):
-        main()
+    # while(True==True):
+    main()
 

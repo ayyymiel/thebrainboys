@@ -55,6 +55,8 @@ board.prepare_session()
 
 board.start_stream(45000, args.streamer_params)  # ring buffer int
 
+model = tf.keras.models.load_model("Models/Selu70.h5")
+
 def main():
     time.sleep(5)  # time streamed in seconds
 
@@ -64,8 +66,6 @@ def main():
 
     data = data[1:9, 1:701] #reshaping data into same format
     data = np.array(data).reshape(-1, 8, 700)
-
-    model = tf.keras.models.load_model("Models\CNN1.h5")
 
     prediction = model.predict(data)
 

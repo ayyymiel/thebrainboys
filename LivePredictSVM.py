@@ -52,7 +52,7 @@ params.file = args.file
 board = BoardShim(args.board_id, params)
 
 # load it again
-with open('SVMModel.pkl', 'rb') as fid:
+with open('Models\SVMModel.pkl', 'rb') as fid:
     clf = cPickle.load(fid)
 
 board.prepare_session()

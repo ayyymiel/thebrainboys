@@ -60,20 +60,24 @@ def main():
     board.prepare_session()
 
     board.start_stream(45000, args.streamer_params)  # ring buffer int
-    time.sleep(5)  # time streamed in seconds (+5)
-    # time.sleep(10)  # time streamed in seconds 
+    time.sleep(1)  # time streamed in seconds (+5)
+
 
     data = board.get_board_data() #This is a numpy.ndarray
 
     board.stop_stream()
 
+    print()
+    print(board.get_sampling_rate(args.board_id)) # <--- inconsistency in rows of data.
+
     # savetxt('raw_data.csv', data, delimiter=' ')
     #keeps the 8 channels of data for 700 rows which is about 3 seconds of data (5 seconds gives about 1130-1185 rows)
-    keyData = data[:, 1:701]
+    # keyData = data[:, 1:701]
+
     # savetxt('key_data.csv', keyData, delimiter=' ')
 
     # Check data
-    check_data(keyData)
+    # check_data(keyData)
 
     # dataT=data.T
     # savetxt('data_T.csv', dataT, delimiter=' ')
@@ -82,12 +86,9 @@ def main():
     # restored_data = DataFilter.read_file('test3.csv')
     # restored_df = pd.DataFrame(np.transpose(restored_data))
 
-    print(keyData)
-    # print(keyData)
-    # print(restored_df)
 
-    # DataFilter.write_file(data, f"{int(time.time())}.npy", 'w')  # use 'a' for append mode
-    DataFilter.write_file(keyData, f"{int(time.time())}.npy", 'w')  # use 'a' for append mode
+    DataFilter.write_file(data, f"{int(time.time())}.npy", 'w')  # use 'a' for append mode
+    # DataFilter.write_file(keyData, f"{int(time.time())}.npy", 'w')  # use 'a' for append mode
     # Don't use latest brainflow version, it will cause grief: use 3.9.2
 
 

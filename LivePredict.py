@@ -65,7 +65,7 @@ def main():
     data = data[1:9, 1:701] #reshaping data into same format
     data = np.array(data).reshape(-1, 8, 700)
 
-    model = tf.keras.models.load_model(Path("Models\CNN80tanhActivation.model"))
+    model = tf.keras.models.load_model("Models\CNN1.h5")
 
     prediction = model.predict(data)
 

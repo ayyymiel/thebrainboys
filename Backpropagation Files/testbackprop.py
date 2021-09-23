@@ -76,7 +76,8 @@ def train_network(network, train, l_rate, n_epoch, n_outputs):
 		for row in train:
 			outputs = forward_propagate(network, row)
 			expected = [0 for i in range(n_outputs)]
-			expected[row[-1]] = 1
+			last_row = int(row[-1])
+			expected[last_row] = 1
 			sum_error += sum([(expected[i]-outputs[i])**2 for i in range(len(expected))])
 			backward_propagate_error(network, expected)
 			update_weights(network, row, l_rate)
@@ -94,6 +95,8 @@ for row in range(len(dataset)):
 	outputs_row = dataset[row]
 	outputs_end = outputs_row[-1]
 	outputs_list.append(outputs_end)
+
+dataset = np.array(dataset)
 
 n_outputs = len(outputs_list)
 network = initialize_network(n_inputs, 2, n_outputs)

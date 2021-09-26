@@ -18,9 +18,9 @@ Updates:
     - Check TrimmedData for trimmed data points (5 second runs)
     
   ### @ayyymiel
-    - made backprop dataset
-    - edited backprop to take in the dataset
-      > overflow errors in activation function
+    - Created correlation module to generate correlation matrix to analyze interaction between nodes
+    - Uploaded screenshots from plots per "thought"
+    - Uploaded separate file for backpropagation prediction functions
     To-Do:
-      > fix overflow errors, try new activation func
-      > move function comments from old backpropagation module to new
+      > Analyze correlation plots
+      > Train backprop model on trimmed dataset by @Eric

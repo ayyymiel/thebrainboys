@@ -57,7 +57,10 @@ for i in range(499):
         print(X[i].shape)
         print(y[i])
 """
+X = np.array(X)
+print(X.shape)
 X=np.array(X).reshape(-1, 8,700)
+
 #X=np.array(X).reshape(-1, 23,700)
 np.save("X_b.npy",X)
 # np.save("y.npy",y )

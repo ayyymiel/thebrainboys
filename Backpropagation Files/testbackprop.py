@@ -97,9 +97,12 @@ for row in range(len(dataset)):
 	outputs_list.append(outputs_end)
 
 dataset = np.array(dataset)
+#
+# n_outputs = len(outputs_list)
+# network = initialize_network(n_inputs, 2, n_outputs)
+# train_network(network, dataset, 0.2, 50, n_outputs)
+# for layer in network:
+# 	print(layer)
 
-n_outputs = len(outputs_list)
-network = initialize_network(n_inputs, 2, n_outputs)
-train_network(network, dataset, 0.2, 50, n_outputs)
-for layer in network:
-	print(layer)
+print(dataset.size)
+print(type(dataset))

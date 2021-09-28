@@ -7,7 +7,7 @@ import pickle
 from sklearn.model_selection import train_test_split
 
 #dir = 'C:/Users/Eric-/OneDrive/Desktop/Cap/pythonProject/ActionData/'
-dir = 'TrimmedData/'
+dir = 'C:/Users/Eric-/OneDrive/Desktop/Cap/pythonProject/ActionsData/'
 #categories = ["Back", "Forward", "Left", "Other", "Right"]
 categories = ["Backward", "Forward", "Left", "Other", "Right"]
 
@@ -24,6 +24,7 @@ def createTrainingData():
             actionData = DataFilter.read_file(os.path.join(path, datas))
             if(categories.index(category)==0): #back
                 trainingData.append([actionData, [1, 0, 0, 0, 0]])
+                temp = actionData
 
             elif(categories.index(category)==1): #forward
                 trainingData.append([actionData, [0, 1, 0, 0, 0]])
@@ -37,38 +38,62 @@ def createTrainingData():
             elif(categories.index(category)==4): #right
                 trainingData.append([actionData, [0, 0, 0, 0, 1]])
 
+"""
+#testing if a file is too small 
+if(actionData.shape!=(8,700)):
+    print(datas)
+"""
 
 createTrainingData()
 print(len(trainingData))
 
-# random.shuffle(trainingData) #randomize the training data
+random.shuffle(trainingData) #randomize the training data
 
 X=[] #feature
 y=[] #label
 
 for features, label in trainingData:
+    #X.append(features[:,0:150])
     X.append(features)
     y.append(label)
+
 """
 #print (X[1].shape)
-for i in range(499):
+for i in range(749):
     #print (X[i].shape)
     if(X[i].shape!=(8,700)):
         print(X[i].shape)
         print(y[i])
 """
-X = np.array(X)
-print(X.shape)
-X=np.array(X).reshape(-1, 8,700)
 
+
+#X=np.array(X).reshape(-1, 8,150)
+X=np.array(X).reshape(-1, 8, 700)
 #X=np.array(X).reshape(-1, 23,700)
-np.save("X_b.npy",X)
-# np.save("y.npy",y )
-X_train, X_test = train_test_split(X, test_size=0.4)
-
+np.save("Train&TestDataConvNet/X.npy", X)
+np.save("Train&TestDataConvNet/y.npy", y)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.4)
+print(X_train.shape)
+print(X_test.shape)
+print (X[0].shape)
 #y=np.array(y).reshape(5)
-np.save("X_train_b.npy", X_train)
-# np.save("y_train.npy",y_train )
+np.save("Train&TestDataConvNet/X_train.npy", X_train)
+np.save("Train&TestDataConvNet/y_train.npy", y_train)
 
-np.save("X_test_b.npy", X_test)
-# np.save("y_test.npy",y_test)
+np.save("Train&TestDataConvNet/X_test.npy", X_test)
+np.save("Train&TestDataConvNet/y_test.npy", y_test)
+"""
+
+np.save("Train&TestDataConvNet/Trimmed to 150/X.npy", X)
+np.save("Train&TestDataConvNet/Trimmed to 150/y.npy", y)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.4)
+print(X_train.shape)
+print(X_test.shape)
+print (X[0].shape)
+#y=np.array(y).reshape(5)
+np.save("Train&TestDataConvNet/Trimmed to 150/X_train.npy", X_train)
+np.save("Train&TestDataConvNet/Trimmed to 150/y_train.npy", y_train)
+
+np.save("Train&TestDataConvNet/Trimmed to 150/X_test.npy", X_test)
+np.save("Train&TestDataConvNet/Trimmed to 150/y_test.npy", y_test)
+"""

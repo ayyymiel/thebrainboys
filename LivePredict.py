@@ -70,8 +70,10 @@ def main():
 
     prediction = model.predict(data)
 
+    """
+    
     x = NaN
-
+    
     counter =-1
     temp=0
     highest=0
@@ -85,9 +87,10 @@ def main():
             if temp>highest:
                 highest=temp
                 x=counter
-
+    """
+    
     print("The action you are thinking is: ", prediction)
-    print("The action you are thinking is: ", action[x])
+    print("The action you are thinking is: ", action[np.argmax(prediction)])
 
 '''
     data = ''

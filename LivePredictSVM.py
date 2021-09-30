@@ -28,7 +28,8 @@ parser.add_argument('--ip-port', type=int, help='ip port', required=False, defau
 parser.add_argument('--ip-protocol', type=int, help='ip protocol, check IpProtocolType enum', required=False,
                     default=0)
 parser.add_argument('--ip-address', type=str, help='ip address', required=False, default='')
-parser.add_argument('--serial-port', type=str, help='serial port', required=False, default='COM6')
+parser.add_argument('--serial-port', type=str, help='serial port', required=False, default='/dev/cu.usbserial-DM0258P6')   # <- mac
+# parser.add_argument('--serial-port', type=str, help='serial port', required=False, default='COM6') # <- windows
 parser.add_argument('--mac-address', type=str, help='mac address', required=False, default='')
 parser.add_argument('--other-info', type=str, help='other info', required=False, default='')
 parser.add_argument('--streamer-params', type=str, help='streamer params', required=False, default='')
@@ -52,7 +53,7 @@ params.file = args.file
 board = BoardShim(args.board_id, params)
 
 # load it again
-with open('Models\SVMModel.pkl', 'rb') as fid:
+with open('SVMModel2.pkl', 'rb') as fid:
     clf = cPickle.load(fid)
 
 board.prepare_session()
@@ -66,8 +67,8 @@ def main():
 
     #board.stop_stream()
 
-    data = data[1:9, 1:701] #reshaping data into same format
-    data = np.array(data).reshape(-1, 8, 700)
+    data = data[1:9, 1:151] #reshaping data into same format
+    data = np.array(data).reshape(-1, 8, 150)
     n_samples = len(data)
     data = data.reshape((n_samples, -1))
     scaler = MinMaxScaler()  # Default behavior is to scale to [0,1]

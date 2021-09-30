@@ -28,7 +28,8 @@ parser.add_argument('--ip-port', type=int, help='ip port', required=False, defau
 parser.add_argument('--ip-protocol', type=int, help='ip protocol, check IpProtocolType enum', required=False,
                     default=0)
 parser.add_argument('--ip-address', type=str, help='ip address', required=False, default='')
-parser.add_argument('--serial-port', type=str, help='serial port', required=False, default='COM6')
+parser.add_argument('--serial-port', type=str, help='serial port', required=False, default='/dev/cu.usbserial-DM0258P6')   # <- mac
+# parser.add_argument('--serial-port', type=str, help='serial port', required=False, default='COM6') # <- windows
 parser.add_argument('--mac-address', type=str, help='mac address', required=False, default='')
 parser.add_argument('--other-info', type=str, help='other info', required=False, default='')
 parser.add_argument('--streamer-params', type=str, help='streamer params', required=False, default='')
@@ -55,7 +56,7 @@ board.prepare_session()
 
 board.start_stream(45000, args.streamer_params)  # ring buffer int
 
-model = tf.keras.models.load_model("Models/Selu70.h5")
+model = tf.keras.models.load_model("Relu80.h5")
 
 def main():
     time.sleep(5)  # time streamed in seconds

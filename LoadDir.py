@@ -5,9 +5,11 @@ from brainflow.data_filter import DataFilter, FilterTypes, AggOperations
 import random
 import pickle
 from sklearn.model_selection import train_test_split
+from sklearn.model_selection import StratifiedShuffleSplit
 
 #dir = 'C:/Users/Eric-/OneDrive/Desktop/Cap/pythonProject/ActionData/'
-dir = 'C:/Users/Eric-/OneDrive/Desktop/Cap/pythonProject/ActionsData/'
+#dir = 'C:/Users/Eric-/OneDrive/Desktop/Cap/pythonProject/ActionsData/'
+dir='ActionsData/'
 #categories = ["Back", "Forward", "Left", "Other", "Right"]
 categories = ["Backward", "Forward", "Left", "Other", "Right"]
 
@@ -47,7 +49,7 @@ if(actionData.shape!=(8,700)):
 createTrainingData()
 print(len(trainingData))
 
-random.shuffle(trainingData) #randomize the training data
+#random.shuffle(trainingData) #randomize the training data
 
 X=[] #feature
 y=[] #label
@@ -69,10 +71,11 @@ for i in range(749):
 
 #X=np.array(X).reshape(-1, 8,150)
 X=np.array(X).reshape(-1, 8, 700)
-#X=np.array(X).reshape(-1, 23,700)
+
+
 np.save("Train&TestDataConvNet/X.npy", X)
 np.save("Train&TestDataConvNet/y.npy", y)
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.4)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.4, stratify=y)
 print(X_train.shape)
 print(X_test.shape)
 print (X[0].shape)
@@ -82,18 +85,22 @@ np.save("Train&TestDataConvNet/y_train.npy", y_train)
 
 np.save("Train&TestDataConvNet/X_test.npy", X_test)
 np.save("Train&TestDataConvNet/y_test.npy", y_test)
+
 """
 
-np.save("Train&TestDataConvNet/Trimmed to 150/X.npy", X)
-np.save("Train&TestDataConvNet/Trimmed to 150/y.npy", y)
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.4)
+np.save("Train&TestDataConvNet/NewTrimmed150/X.npy", X)
+np.save("Train&TestDataConvNet/NewTrimmed150/y.npy", y)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.4,stratify=y)
+
 print(X_train.shape)
 print(X_test.shape)
 print (X[0].shape)
 #y=np.array(y).reshape(5)
-np.save("Train&TestDataConvNet/Trimmed to 150/X_train.npy", X_train)
-np.save("Train&TestDataConvNet/Trimmed to 150/y_train.npy", y_train)
+np.save("Train&TestDataConvNet/NewTrimmed150/X_train.npy", X_train)
+np.save("Train&TestDataConvNet/NewTrimmed150/y_train.npy", y_train)
 
-np.save("Train&TestDataConvNet/Trimmed to 150/X_test.npy", X_test)
-np.save("Train&TestDataConvNet/Trimmed to 150/y_test.npy", y_test)
+np.save("Train&TestDataConvNet/NewTrimmed150/X_test.npy", X_test)
+np.save("Train&TestDataConvNet/NewTrimmed150/y_test.npy", y_test)
+
+
 """

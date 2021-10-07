@@ -8,15 +8,16 @@ import h5py
 import pandas as pd
 from sklearn.metrics import confusion_matrix
 import seaborn as sns
+import random
 
 action = ["Backward", "Forward", "Left", "Other", "Right"]
 # bring in data
-X_train = np.load("Train&TestDataConvNet/X_train.npy")
-y_train = np.load("Train&TestDataConvNet/y_train.npy")
-X_test = np.load("Train&TestDataConvNet/X_test.npy")
-y_test = np.load("Train&TestDataConvNet/y_test.npy")
-X = np.load("Train&TestDataConvNet/X.npy")
-y = np.load("Train&TestDataConvNet/y.npy")
+X_train = np.load("ConvNet Dataset/X_train.npy")
+y_train = np.load("ConvNet Dataset/y_train.npy")
+X_test = np.load("ConvNet Dataset/X_test.npy")
+y_test = np.load("ConvNet Dataset/y_test.npy")
+X = np.load("ConvNet Dataset/X.npy")
+y = np.load("ConvNet Dataset/y.npy")
 
 X = np.array(X)
 y = np.array(y)
@@ -33,6 +34,12 @@ tf.keras.utils.normalize(X_train, axis=-1, order=2)  # L2 norm
 
 # initialize model
 model = Sequential()
+
+# randomize filters
+filter_list = [32, 64, 128, 256, 512]
+combinations = []
+random_num = random.uniform(0, 4)
+
 
 # conv layer
 model.add(Conv1D(128,  1, input_shape=X_train.shape[1:]))  # 32 units, kernel size, input shape
@@ -72,6 +79,10 @@ model.compile(loss="categorical_crossentropy", optimizer="adam", metrics=["accur
 model.summary()
 
 history = model.fit(X_train, y_train, batch_size=20, epochs=40, validation_data=(X_test, y_test))
+print()
+
+# skip for now
+"""
 # model.save("CNN1.h5")
 
 # summarize history for accuracy
@@ -92,5 +103,6 @@ confNorm = conf/conf.astype(np.float).sum(axis=1)
 print('Normalized Confusion Matrix')
 print(confNorm)
 plt.show()
+"""
 
 

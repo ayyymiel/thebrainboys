@@ -6,6 +6,7 @@ from matplotlib import pyplot as plt
 # select file to load here
 load_file = np.loadtxt('C:/Users/Amiel/PycharmProjects/thebrainboys/TrimmedData/Right/1629944775.npy', delimiter=',')
 
+print(load_file)
 
 def reformat():
     c1, c2, c3, c4, c5, c6, c7, c8 = [], [], [], [], [], [], [], []

@@ -76,8 +76,7 @@ def train_network(network, train, l_rate, n_epoch, n_outputs):
 		for row in train:
 			outputs = forward_propagate(network, row)
 			expected = [0 for i in range(n_outputs)]
-			last_row = int(row[-1])
-			expected[last_row] = 1
+			expected[int(row[-1])] = 1
 			sum_error += sum([(expected[i]-outputs[i])**2 for i in range(len(expected))])
 			backward_propagate_error(network, expected)
 			update_weights(network, row, l_rate)
@@ -85,10 +84,11 @@ def train_network(network, train, l_rate, n_epoch, n_outputs):
 
 
 # Test training backprop algorithm
-load_npy = np.load('new_X_array.npy')
+load_npy = np.load('new_X_short_scaled_array.npy')
 dataset = np.ndarray.tolist(load_npy)
 
 n_inputs = len(dataset[0]) - 1
+
 
 outputs_list = []
 for row in range(len(dataset)):
@@ -97,12 +97,17 @@ for row in range(len(dataset)):
 	outputs_list.append(outputs_end)
 
 dataset = np.array(dataset)
-#
-# n_outputs = len(outputs_list)
-# network = initialize_network(n_inputs, 2, n_outputs)
-# train_network(network, dataset, 0.2, 50, n_outputs)
-# for layer in network:
-# 	print(layer)
 
-print(dataset.size)
-print(type(dataset))
+n_outputs = len(outputs_list)
+network = initialize_network(n_inputs, 100, n_outputs)
+train_network(network, dataset, 0.5, 20, n_outputs)
+
+nn_list = []
+
+for layer in network:
+	print(layer)
+	nn_list.append(layer)
+
+nn_npy = np.array(nn_list)
+np.save('nn_npy', nn_npy)
+print('File saved')

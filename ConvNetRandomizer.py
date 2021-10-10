@@ -26,14 +26,10 @@ X_train = np.array(X_train)
 y_train = np.array(y_train)
 X_test = np.array(X_test)
 y_test = np.array(y_test)
-print(X_test.shape)
+# print(X_test.shape)
 
 # normalize data
 tf.keras.utils.normalize(X_train, axis=-1, order=2)  # L2 norm
-
-
-# initialize model
-model = Sequential()
 
 # randomize filters
 filter_list = [32, 64, 128, 256, 512]
@@ -59,51 +55,75 @@ for i in range(625):
     else:
         combinations.append(neurons)
 
-print(combinations)
+accuracies, l1, l2, l3, l4, l5, l6, l7, l8 = [], [], [], [], [], [], [], [], []
+# initialize model
 
-#
-# # conv layer
-# model.add(Conv1D(128,  1, input_shape=X_train.shape[1:]))  # 32 units, kernel size, input shape
-# model.add(Activation('relu'))
-#
-# model.add(Conv1D(128, 2))
-# model.add(Activation('relu'))
-#
-# model.add(Conv1D(256, 1))
-# model.add(Activation('relu'))
-#
-# model.add(Conv1D(256, 1))
-# model.add(Activation('relu'))
-#
-# model.add(Conv1D(512, 2))
-# model.add(Activation('relu'))
-#
-# model.add(Conv1D(256, 2))
-# model.add(Activation('relu'))
-#
-# model.add(Conv1D(128, 2))
-# model.add(Activation('relu'))
-#
-# model.add(Conv1D(128, 2))
-# model.add(Activation('relu'))
-#
-# model.add(Flatten())
-#
-# model.add(Dense(512))
-# model.add(Dense(256))
-# model.add(Dense(64))
-#
-# model.add(Dense(5))
-# model.add(Activation('softmax'))
-#
-# model.compile(loss="categorical_crossentropy", optimizer="adam", metrics=["accuracy", tf.keras.metrics.Recall()])
-# model.summary()
-#
-# history = model.fit(X_train, y_train, batch_size=20, epochs=40, validation_data=(X_test, y_test))
-# accuracies.append(history.history['accuracy'][39])
-#
-# df = pd.DataFrame(accuracies)
-# df.to_csv('accuracy.csv', encoding='utf-8', index=False, header=False)
+for i in range(len(combinations)):
+# conv layer
+    model = Sequential()
+
+    model.add(Conv1D(combinations[i][0], 1, input_shape=(8, 700)))  # 32 units, kernel size, input shape
+    model.add(Activation('relu'))
+
+    model.add(Conv1D(combinations[i][1], 2))
+    model.add(Activation('relu'))
+
+    model.add(Conv1D(combinations[i][2], 1))
+    model.add(Activation('relu'))
+
+    model.add(Conv1D(combinations[i][3], 1))
+    model.add(Activation('relu'))
+
+    model.add(Conv1D(combinations[i][4], 2))
+    model.add(Activation('relu'))
+
+    model.add(Conv1D(combinations[i][5], 2))
+    model.add(Activation('relu'))
+
+    model.add(Conv1D(combinations[i][6], 2))
+    model.add(Activation('relu'))
+
+    model.add(Conv1D(combinations[i][7], 2))
+    model.add(Activation('relu'))
+
+    model.add(Flatten())
+
+    model.add(Dense(512))
+    model.add(Dense(256))
+    model.add(Dense(64))
+
+    model.add(Dense(5))
+    model.add(Activation('softmax'))
+
+    model.compile(loss="categorical_crossentropy", optimizer="adam", metrics=["accuracy", tf.keras.metrics.Recall()])
+    model.summary()
+
+    history = model.fit(X_train, y_train, batch_size=20, epochs=40, validation_data=(X_test, y_test))
+    accuracies.append(history.history['accuracy'][39])
+    l1.append(combinations[i][0])
+    l2.append(combinations[i][1])
+    l3.append(combinations[i][2])
+    l4.append(combinations[i][3])
+    l5.append(combinations[i][4])
+    l6.append(combinations[i][5])
+    l7.append(combinations[i][6])
+    l8.append(combinations[i][7])
+    print(i)
+
+df = {'Accuracy': accuracies,
+      'Layer1': l1,
+      'Layer2': l2,
+      'Layer3': l3,
+      'Layer4': l4,
+      'Layer5': l5,
+      'Layer6': l6,
+      'Layer7': l7,
+      'Layer8': l8,
+      }
+
+df = pd.DataFrame(df)
+df.to_csv('accuracy.csv', encoding='utf-8', index=False, header=False)
+print('Finished randomizing. Accuracies and neurons appended')
 
 # skip for now
 """

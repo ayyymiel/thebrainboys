@@ -5,37 +5,13 @@ import numpy as np
 import pickle
 import matplotlib.pyplot as plt
 import h5py
-
-from sklearn.metrics import confusion_matrix
 import pandas as pd
+from sklearn.metrics import confusion_matrix, plot_confusion_matrix
 import seaborn as sns
 
-"""
-def plot_confusion_matrix(cm, names, title='Confusion matrix',
-                            cmap=plt.cm.Blues):
-    plt.imshow(cm, interpolation='nearest', cmap=cmap)
-    plt.title(title)
-    plt.colorbar()
-    tick_marks = np.arange(len(names))
-    plt.xticks(tick_marks, names, rotation=45)
-    plt.yticks(tick_marks, names)
-    plt.tight_layout()
-    plt.ylabel('True label')
-    plt.xlabel('Predicted label')
-"""
-
-#action = ["Backward", "Forward", "Left", "Other", "Right"]
-action = ["Backward", "Forward", "Left", "Right"]
+action = ["Backward", "Forward", "Left", "Other", "Right"]
 #bring in data
 
-X_train=np.load("Train&TestDataConvNet/DropSet/X_train.npy")
-y_train=np.load("Train&TestDataConvNet/DropSet/y_train.npy")
-X_test=np.load("Train&TestDataConvNet/DropSet/X_test.npy")
-y_test=np.load("Train&TestDataConvNet/DropSet/y_test.npy")
-X=np.load("Train&TestDataConvNet/DropSet/X.npy")
-y=np.load("Train&TestDataConvNet/DropSet/y.npy")
-
-"""
 X_train=np.load("Train&TestDataConvNet/X_train.npy")
 y_train=np.load("Train&TestDataConvNet/y_train.npy")
 X_test=np.load("Train&TestDataConvNet/X_test.npy")
@@ -43,7 +19,7 @@ y_test=np.load("Train&TestDataConvNet/y_test.npy")
 X=np.load("Train&TestDataConvNet/X.npy")
 y=np.load("Train&TestDataConvNet/y.npy")
 """
-"""
+
 X_train=np.load("Trimmed to 150/X_train.npy")
 y_train=np.load("Trimmed to 150/y_train.npy")
 X_test=np.load("Trimmed to 150/X_test.npy")
@@ -67,54 +43,46 @@ tf.keras.utils.normalize(X_train, axis=-1, order=2) #L2 norm
 model = Sequential()
 
 #conv layer
-model.add(Conv1D(128,  1, input_shape=X_train.shape[1:])) ##32 units, kernel size, input shape
+model.add(Conv1D(64,  1, input_shape=X_train.shape[1:])) ##32 units, kernel size, input shape
 model.add(Activation('relu'))
 
-model.add(Conv1D(128, 1))
+model.add(Conv1D(32, 2))
 model.add(Activation('relu'))
 
-model.add(Conv1D(256, 1))
+model.add(Conv1D(64, 1))
 model.add(Activation('relu'))
 
-model.add(Conv1D(512, 1))
+model.add(Conv1D(32, 1))
 model.add(Activation('relu'))
 
-model.add(Conv1D(512, 1))
-model.add(Activation('relu'))
-#model.add(MaxPooling1D(pool_size=2))
-
-model.add(Conv1D(256, 1))
+model.add(Conv1D(256, 2))
 model.add(Activation('relu'))
 
-model.add(Conv1D(128, 2))
+model.add(Conv1D(256, 2))
 model.add(Activation('relu'))
 
-model.add(Conv1D(128, 2))
+model.add(Conv1D(256, 2))
 model.add(Activation('relu'))
-model.add(MaxPooling1D(pool_size=2))
+
+model.add(Conv1D(256, 2))
+model.add(Activation('relu'))
 
 model.add(Flatten())
-#model.add(Dense(1024))
 model.add(Dense(512))
 model.add(Dense(256))
-model.add(Dense(128))
 model.add(Dense(64))
-#model.add(Dense(32))
-#model.add(Dense(16))
 
-#model.add(Dense(5))
-model.add(Dense(4))
+model.add(Dense(5))
 model.add(Activation('softmax'))
 
 model.compile(loss="categorical_crossentropy", optimizer="adam", metrics=["accuracy",tf.keras.metrics.Recall()])
 model.summary()
 
-history=model.fit(X_train, y_train, batch_size=20, epochs=50,validation_data=(X_test, y_test))
+history=model.fit(X_train, y_train, batch_size=20, epochs=40,validation_data=(X_test, y_test))
 
 model.save("CNN1.h5")
 
 # summarize history for accuracy
-plt.figure(figsize=(8,8))
 plt.plot(history.history['accuracy'])
 plt.plot(history.history['val_accuracy'])
 plt.title('model accuracy')
@@ -135,8 +103,11 @@ print(confNorm)
 
 df_cm = pd.DataFrame(confNorm, index=action, columns=action)
 plt.figure(figsize=(8,8))
-plt.title('Normalized Confusion Matrix')
-sns.heatmap(df_cm, annot=True)
+plt.title('Normalized Confusion Matrix \n ConvNet')
+
+sns.heatmap(df_cm,  annot=True)
+plt.xlabel("Predicted Labels", labelpad=18)
+plt.ylabel("Expected Labels",labelpad=18 )
 plt.show()
 
 

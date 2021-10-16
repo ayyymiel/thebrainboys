@@ -17,7 +17,7 @@ import _pickle as cPickle
 from sklearn.preprocessing import MinMaxScaler
 
 action = ["Backward", "Forward", "Left", "Other", "Right"]
-ser = serial.Serial("COM4", 9600, timeout = 1) #Change your port name COM... and your baudrate
+# ser = serial.Serial("COM4", 9600, timeout = 1) #Change your port name COM... and your baudrate
 BoardShim.enable_dev_board_logger()
 
 parser = argparse.ArgumentParser()
@@ -52,7 +52,8 @@ params.file = args.file
 board = BoardShim(args.board_id, params)
 
 # load it again
-clf = pickle.load(open('xgboost.pkl', "rb"))
+# clf = pickle.load(open('xgboost.pkl', "rb"))
+clf = pickle.load(open('RFModel.joblib', "rb"))
 
 
 board.prepare_session()

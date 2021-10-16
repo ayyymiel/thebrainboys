@@ -88,3 +88,13 @@ sns.heatmap(df_cm, annot=True)
 plt.xlabel("Predicted Labels", labelpad=18)
 plt.ylabel("Expected Labels",labelpad=18 )
 plt.show()
+
+np.fill_diagonal(confNorm, 0)
+df_cm = pd.DataFrame(confNorm, index=action, columns=action)
+plt.figure(figsize=(8,8))
+
+plt.title('Absolute Confusion Matrix \n Naive Bayes')
+sns.heatmap(df_cm, annot=True)
+plt.xlabel("Predicted Labels", labelpad=18)
+plt.ylabel("Expected Labels",labelpad=18 )
+plt.show()

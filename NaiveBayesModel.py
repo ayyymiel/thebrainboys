@@ -14,12 +14,12 @@ import seaborn as sns
 action = ["Backward", "Forward", "Left", "Other", "Right"]
 #bring in data
 
-X=np.load("TrainTestDataFlat/NaiveBayesSets/X.npy")
-y=np.load("TrainTestDataFlat/NaiveBayesSets/y.npy")
-X_train=np.load("TrainTestDataFlat/NaiveBayesSets/X_train.npy")
-y_train=np.load("TrainTestDataFlat/NaiveBayesSets/y_train.npy")
-X_test=np.load("TrainTestDataFlat/NaiveBayesSets/X_test.npy")
-y_test=np.load("TrainTestDataFlat/NaiveBayesSets/y_test.npy")
+# X=np.load("TrainTestDataFlat/NaiveBayesSets/X.npy")
+# y=np.load("TrainTestDataFlat/NaiveBayesSets/y.npy")
+# X_train=np.load("TrainTestDataFlat/NaiveBayesSets/X_train.npy")
+# y_train=np.load("TrainTestDataFlat/NaiveBayesSets/y_train.npy")
+# X_test=np.load("TrainTestDataFlat/NaiveBayesSets/X_test.npy")
+# y_test=np.load("TrainTestDataFlat/NaiveBayesSets/y_test.npy")
 
 
 X=np.load("TrainTestDataFlat/Shuffled/X.npy")
@@ -70,7 +70,17 @@ print(confNorm)
 
 df_cm = pd.DataFrame(confNorm, index=action, columns=action)
 plt.figure(figsize=(8,8))
-plt.title('Normalized Confusion Matrix')
+plt.title('Normalized Confusion Matrix \n Naive Bayes')
+sns.heatmap(df_cm, annot=True)
+plt.xlabel("Predicted Labels", labelpad=18)
+plt.ylabel("Expected Labels",labelpad=18 )
+plt.show()
+
+np.fill_diagonal(confNorm, 0)
+df_cm = pd.DataFrame(confNorm, index=action, columns=action)
+plt.figure(figsize=(8,8))
+
+plt.title('Absolute Confusion Matrix \n Naive Bayes')
 sns.heatmap(df_cm, annot=True)
 plt.xlabel("Predicted Labels", labelpad=18)
 plt.ylabel("Expected Labels",labelpad=18 )

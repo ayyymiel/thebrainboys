@@ -12,6 +12,7 @@ import _pickle as cPickle
 import os
 import joblib
 from sklearn.datasets import make_classification
+from sklearn.metrics import classification_report›
 
 
 rf = RandomForestClassifier()
@@ -49,7 +50,7 @@ rf.fit(X_train, y_train)
  #   cPickle.dump(rf, f)
 
 #save model
-joblib.dump(rf, "RFModel.joblib")
+# joblib.dump(rf, "RFModel.joblib")
 
 """
 #to load model 
@@ -77,14 +78,27 @@ conf=confusion_matrix(y_test, predicted)
 print('Confusion Matrix')
 print (conf)
 confNorm = conf/conf.astype(np.float).sum(axis=1)
+
 print('Normalized Confusion Matrix')
 print(confNorm)
 
 df_cm = pd.DataFrame(confNorm, index=action, columns=action)
 plt.figure(figsize=(8,8))
+
 plt.title('Normalized Confusion Matrix \n Random Forest')
 sns.heatmap(df_cm, annot=True)
 plt.xlabel("Predicted Labels", labelpad=18)
 plt.ylabel("Expected Labels",labelpad=18 )
 plt.show()
 
+np.fill_diagonal(confNorm, 0)
+df_cm = pd.DataFrame(confNorm, index=action, columns=action)
+plt.figure(figsize=(8,8))
+
+plt.title('Absolute Confusion Matrix \n Random Forest')
+sns.heatmap(df_cm, annot=True)
+plt.xlabel("Predicted Labels", labelpad=18)
+plt.ylabel("Expected Labels",labelpad=18 )
+plt.show()
+
+# print(classification_report(y_test, predicted, target_names=intention))

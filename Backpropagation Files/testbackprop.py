@@ -100,7 +100,7 @@ dataset = np.array(dataset)
 
 n_outputs = len(outputs_list)
 network = initialize_network(n_inputs, 100, n_outputs)
-train_network(network, dataset, 0.5, 20, n_outputs)
+train_network(network, dataset, 0.25, 50, n_outputs)
 
 nn_list = []
 

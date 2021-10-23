@@ -18,9 +18,6 @@ Updates:
     - Check TrimmedData for trimmed data points (5 second runs)
     
   ### @ayyymiel
-    - Created correlation module to generate correlation matrix to analyze interaction between nodes
-    - Uploaded screenshots from plots per "thought"
-    - Uploaded separate file for backpropagation prediction functions
-    To-Do:
-      > Analyze correlation plots
-      > Train backprop model on trimmed dataset by @Eric
+    - Research DBSCAN for unsupervised learning modules
+    - Make LivePredict GUI
+    

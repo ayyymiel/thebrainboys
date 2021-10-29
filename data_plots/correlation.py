@@ -4,7 +4,8 @@ import seaborn as sn
 from matplotlib import pyplot as plt
 
 # select file to load here
-load_file = np.loadtxt('C:/Users/Amiel/PycharmProjects/thebrainboys/TrimmedData/Right/1629944775.npy', delimiter=',')
+# load_file = np.loadtxt('C:/Users/Amiel/PycharmProjects/thebrainboys/TrimmedData/Right/1629944775.npy', delimiter=',')
+load_file = np.loadtxt('TrimmedData/Other/1629943804.npy', delimiter=',')
 
 print(load_file)
 

@@ -1,6 +1,6 @@
 import numpy as np
 
-file = np.load('X_train_b_2.npy', encoding='latin1')
+file = np.load('ConvNet Dataset/X.npy', encoding='latin1')
 
 file_list = np.ndarray.tolist(file)
 reshapen = [elem for twod in file_list for elem in twod]

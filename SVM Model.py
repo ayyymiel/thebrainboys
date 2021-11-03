@@ -39,6 +39,31 @@ print(f"Classification report for classifier {clf}:\n"
       f"{metrics.classification_report(y_test, predicted)}\n")
 
 print (type(y))
+
+conf=confusion_matrix(y_test, predicted)
+print('Confusion Matrix')
+print (conf)
+confNorm = conf/conf.astype(np.float).sum(axis=1)
+print('Normalized Confusion Matrix')
+print(confNorm)
+
+df_cm = pd.DataFrame(confNorm, index=action, columns=action)
+plt.figure(figsize=(8,8))
+plt.title('Normalized Confusion Matrix \n XGBoost')
+sns.heatmap(df_cm, annot=True)
+plt.xlabel("Predicted Labels", labelpad=18)
+plt.ylabel("Expected Labels",labelpad=18 )
+plt.show()
+
+np.fill_diagonal(confNorm, 0)
+df_cm = pd.DataFrame(confNorm, index=action, columns=action)
+plt.figure(figsize=(8,8))
+
+plt.title('Absolute Confusion Matrix \n Naive Bayes')
+sns.heatmap(df_cm, annot=True)
+plt.xlabel("Predicted Labels", labelpad=18)
+plt.ylabel("Expected Labels",labelpad=18 )
+plt.show()
 """
 
 # Set the parameters by cross-validation

@@ -61,15 +61,12 @@ def main():
     board.prepare_session()
 
     board.start_stream(45000, args.streamer_params)  # ring buffer int
-    time.sleep(1)  # time streamed in seconds (+5)
+    time.sleep(5)  # time streamed in seconds (+5)
 
 
     data = board.get_board_data() #This is a numpy.ndarray
 
     board.stop_stream()
-
-    print()
-    print(board.get_sampling_rate(args.board_id)) # <--- inconsistency in rows of data.
 
     # savetxt('raw_data.csv', data, delimiter=' ')
     #keeps the 8 channels of data for 700 rows which is about 3 seconds of data (5 seconds gives about 1130-1185 rows)
@@ -78,7 +75,8 @@ def main():
     # savetxt('key_data.csv', keyData, delimiter=' ')
 
     # Check data
-    # check_data(keyData)
+    current_time = int(time.time())
+    check_data(data, current_time) 
 
     # dataT=data.T
     # savetxt('data_T.csv', dataT, delimiter=' ')
@@ -86,16 +84,19 @@ def main():
     # DataFilter.write_file(data, 'test3.csv', 'w')  # use 'a' for append mode
     # restored_data = DataFilter.read_file('test3.csv')
     # restored_df = pd.DataFrame(np.transpose(restored_data))
+    
 
-
-    DataFilter.write_file(data, f"{int(time.time())}.npy", 'w')  # use 'a' for append mode
+    DataFilter.write_file(data, f"{current_time}.npy", 'w')  # use 'a' for append mode
     # DataFilter.write_file(keyData, f"{int(time.time())}.npy", 'w')  # use 'a' for append mode
     # Don't use latest brainflow version, it will cause grief: use 3.9.2
 
 
-def check_data(incoming_data):
-    if (incoming_data.shape != (24, 700)):
-        print("Sample too small", incoming_data.shape)
+def check_data(incoming_data, current_time):
+    row_count, col_count = incoming_data.shape
+    if (col_count < 1000):
+        print(f"Sample {current_time} too small")
+        print(f"\tshape: {incoming_data.shape}")
+        print(f"\trow count: {len(incoming_data)}")
 
 
 if __name__ == "__main__":

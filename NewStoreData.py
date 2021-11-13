@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 import os
 from collections import deque
-import cv2
+# import cv2
 import tensorflow as tf
 import random
 from keras.models import Model
@@ -17,7 +17,7 @@ from numpy import asarray
 from numpy import savetxt
 import matplotlib.pyplot as plt
 from matplotlib import style
-import keyboard
+# import keyboard
 
 BoardShim.enable_dev_board_logger()
 
@@ -29,7 +29,7 @@ parser.add_argument('--ip-port', type=int, help='ip port', required=False, defau
 parser.add_argument('--ip-protocol', type=int, help='ip protocol, check IpProtocolType enum', required=False,
                     default=0)
 parser.add_argument('--ip-address', type=str, help='ip address', required=False, default='')
-parser.add_argument('--serial-port', type=str, help='serial port', required=False, default='COM6')
+parser.add_argument('--serial-port', type=str, help='serial port', required=False, default='COM5')
 parser.add_argument('--mac-address', type=str, help='mac address', required=False, default='')
 parser.add_argument('--other-info', type=str, help='other info', required=False, default='')
 parser.add_argument('--streamer-params', type=str, help='streamer params', required=False, default='')
@@ -58,37 +58,38 @@ board.prepare_session()
 board.start_stream(45000, args.streamer_params)  # ring buffer int
 
 def main():
-    if keyboard.is_pressed('a'):
-        time.sleep(5)  # time streamed in seconds (+5)
-        # time.sleep(10)  # time streamed in seconds
+    time.sleep(5)  # time streamed in seconds (+5)
+    # time.sleep(10)  # time streamed in seconds
 
-        data = board.get_board_data()  # This is a numpy.ndarray
+    data = board.get_board_data()  # This is a numpy.ndarray
 
-        # savetxt('raw_data.csv', data, delimiter=' ')
-        # keeps the 8 channels of data for 700 rows which is about 3 seconds of data (5 seconds gives about 1130-1185 rows)
-        keyData = data[1:9, 1:701]
-        # savetxt('key_data.csv', keyData, delimiter=' ')
+    # savetxt('raw_data.csv', data, delimiter=' ')
+    # keeps the 8 channels of data for 700 rows which is about 3 seconds of data (5 seconds gives about 1130-1185 rows)
+    keyData = data[1:9, 1:701]
+    # savetxt('key_data.csv', keyData, delimiter=' ')
 
-        # dataT=data.T
-        # savetxt('data_T.csv', dataT, delimiter=' ')
+    # dataT=data.T
+    # savetxt('data_T.csv', dataT, delimiter=' ')
 
-        # DataFilter.write_file(data, 'test3.csv', 'w')  # use 'a' for append mode
-        # restored_data = DataFilter.read_file('test3.csv')
-        # restored_df = pd.DataFrame(np.transpose(restored_data))
+    # DataFilter.write_file(data, 'test3.csv', 'w')  # use 'a' for append mode
+    # restored_data = DataFilter.read_file('test3.csv')
+    # restored_df = pd.DataFrame(np.transpose(restored_data))
 
-        if (keyData.shape != (8, 700)):
-            print("Sample too small ", keyData.shape)
-        else:
-            print("Sample is good ", keyData.shape)
-        # print(keyData)
-        # print(restored_df)
 
-        # DataFilter.write_file(data, f"{int(time.time())}.npy", 'w')  # use 'a' for append mode
-        DataFilter.write_file(keyData, f"{int(time.time())}.npy", 'w')  # use 'a' for append mode
-        # Don't use latest brainflow version, it will cause grief: use 3.9.2
+    # if (keyData.shape != (8, 700)):
+    #     print("Sample too small ", keyData.shape)
+    # else:
+    #     print("Sample is good ", keyData.shape)
 
-    elif keyboard.is_pressed('b'):
-        board.stop_stream()
+
+    # print(keyData)
+    # print(restored_df)
+
+    # DataFilter.write_file(data, f"{int(time.time())}.npy", 'w')  # use 'a' for append mode
+    DataFilter.write_file(keyData, f"{int(time.time())}.npy", 'w')  # use 'a' for append mode
+    # Don't use latest brainflow version, it will cause grief: use 3.9.2
+
+    board.stop_stream()
 
 if __name__ == "__main__":
     main()

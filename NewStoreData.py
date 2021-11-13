@@ -58,38 +58,41 @@ board.prepare_session()
 board.start_stream(45000, args.streamer_params)  # ring buffer int
 
 def main():
-    time.sleep(5)  # time streamed in seconds (+5)
-    # time.sleep(10)  # time streamed in seconds
+    while True:  
+        start = input("Start? y/n/: ")
+        if start == 'y':
+            time.sleep(5)  # time streamed in seconds (+5)
+            # time.sleep(10)  # time streamed in seconds
 
-    data = board.get_board_data()  # This is a numpy.ndarray
+            data = board.get_board_data()  # This is a numpy.ndarray
 
-    # savetxt('raw_data.csv', data, delimiter=' ')
-    # keeps the 8 channels of data for 700 rows which is about 3 seconds of data (5 seconds gives about 1130-1185 rows)
-    keyData = data[1:9, 1:701]
-    # savetxt('key_data.csv', keyData, delimiter=' ')
+            # savetxt('raw_data.csv', data, delimiter=' ')
+            # keeps the 8 channels of data for 700 rows which is about 3 seconds of data (5 seconds gives about 1130-1185 rows)
+            # savetxt('key_data.csv', keyData, delimiter=' ')
 
-    # dataT=data.T
-    # savetxt('data_T.csv', dataT, delimiter=' ')
+            # dataT=data.T
+            # savetxt('data_T.csv', dataT, delimiter=' ')
 
-    # DataFilter.write_file(data, 'test3.csv', 'w')  # use 'a' for append mode
-    # restored_data = DataFilter.read_file('test3.csv')
-    # restored_df = pd.DataFrame(np.transpose(restored_data))
-
-
-    # if (keyData.shape != (8, 700)):
-    #     print("Sample too small ", keyData.shape)
-    # else:
-    #     print("Sample is good ", keyData.shape)
+            # DataFilter.write_file(data, 'test3.csv', 'w')  # use 'a' for append mode
+            # restored_data = DataFilter.read_file('test3.csv')
+            # restored_df = pd.DataFrame(np.transpose(restored_data))
 
 
-    # print(keyData)
-    # print(restored_df)
+            # if (keyData.shape != (8, 700)):
+            #     print("Sample too small ", keyData.shape)
+            # else:
+            #     print("Sample is good ", keyData.shape)
 
-    # DataFilter.write_file(data, f"{int(time.time())}.npy", 'w')  # use 'a' for append mode
-    DataFilter.write_file(keyData, f"{int(time.time())}.npy", 'w')  # use 'a' for append mode
-    # Don't use latest brainflow version, it will cause grief: use 3.9.2
 
-    board.stop_stream()
+            # print(keyData)
+            # print(restored_df)
+
+            # DataFilter.write_file(data, f"{int(time.time())}.npy", 'w')  # use 'a' for append mode
+            DataFilter.write_file(data, f"{int(time.time())}.npy", 'w')  # use 'a' for append mode
+            # Don't use latest brainflow version, it will cause grief: use 3.9.2
+        elif start == 'n':
+            board.stop_stream()
+            break
 
 if __name__ == "__main__":
     main()

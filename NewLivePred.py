@@ -80,12 +80,12 @@ def main():
 
             x = np.transpose(x)
             x=x[1:9, 100:800]
-            x = np.array(data).reshape(-1, 8, 700)
+            x = np.array(x).reshape(-1, 8, 700)
             n_samples = len(x)
-            data = data.reshape((n_samples, -1))
+            x = x.reshape((n_samples, -1))
             scaler = MinMaxScaler()  # Default behavior is to scale to [0,1]
-            x = scaler.fit_transform(data)
-            prediction = clf.predict(data)
+            x = scaler.fit_transform(x)
+            prediction = clf.predict(x)
 
             print("The action you are thinking is: ", prediction)
 

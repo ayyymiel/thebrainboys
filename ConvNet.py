@@ -9,17 +9,17 @@ import pandas as pd
 from sklearn.metrics import confusion_matrix, plot_confusion_matrix
 import seaborn as sns
 
-action = ["Backward", "Forward", "Left", "Other", "Right"]
+action = ["Backward", "Forward", "Left", "Right"]
 #bring in data
 
-X_train=np.load("Train&TestDataConvNet/X_train.npy")
-y_train=np.load("Train&TestDataConvNet/y_train.npy")
-X_test=np.load("Train&TestDataConvNet/X_test.npy")
-y_test=np.load("Train&TestDataConvNet/y_test.npy")
-X=np.load("Train&TestDataConvNet/X.npy")
-y=np.load("Train&TestDataConvNet/y.npy")
-"""
+X_train=np.load("JumbleConvNetData/X_train.npy")
+y_train=np.load("JumbleConvNetData/y_train.npy")
+X_test=np.load("JumbleConvNetData/X_test.npy")
+y_test=np.load("JumbleConvNetData/y_test.npy")
+X=np.load("JumbleConvNetData/X (1).npy")
+y=np.load("JumbleConvNetData/y.npy")
 
+"""
 X_train=np.load("Trimmed to 150/X_train.npy")
 y_train=np.load("Trimmed to 150/y_train.npy")
 X_test=np.load("Trimmed to 150/X_test.npy")
@@ -27,6 +27,7 @@ y_test=np.load("Trimmed to 150/y_test.npy")
 X=np.load("Trimmed to 150/X.npy")
 y=np.load("Trimmed to 150/y.npy")
 """
+
 X=np.array(X)
 y=np.array(y)
 
@@ -41,30 +42,32 @@ tf.keras.utils.normalize(X_train, axis=-1, order=2) #L2 norm
 
 #initialize model
 model = Sequential()
-
+# 538,0.8666666746139526,128,64,32,32,64,128,512,512
+# 0.3916666805744171,32,128,128,32,32,32,256,512
+# 64, 32, 64, 32, 256, 256, 256, 256
 #conv layer
-model.add(Conv1D(64,  1, input_shape=X_train.shape[1:])) ##32 units, kernel size, input shape
+model.add(Conv1D(32,  1, input_shape=X_train.shape[1:])) ##32 units, kernel size, input shape
 model.add(Activation('relu'))
 
-model.add(Conv1D(32, 2))
+model.add(Conv1D(128, 2))
 model.add(Activation('relu'))
 
-model.add(Conv1D(64, 1))
+model.add(Conv1D(128, 1))
 model.add(Activation('relu'))
 
 model.add(Conv1D(32, 1))
 model.add(Activation('relu'))
 
-model.add(Conv1D(256, 2))
+model.add(Conv1D(32, 2))
+model.add(Activation('relu'))
+
+model.add(Conv1D(32, 2))
 model.add(Activation('relu'))
 
 model.add(Conv1D(256, 2))
 model.add(Activation('relu'))
 
-model.add(Conv1D(256, 2))
-model.add(Activation('relu'))
-
-model.add(Conv1D(256, 2))
+model.add(Conv1D(512, 2))
 model.add(Activation('relu'))
 
 model.add(Flatten())
@@ -72,7 +75,7 @@ model.add(Dense(512))
 model.add(Dense(256))
 model.add(Dense(64))
 
-model.add(Dense(5))
+model.add(Dense(4))
 model.add(Activation('softmax'))
 
 model.compile(loss="categorical_crossentropy", optimizer="adam", metrics=["accuracy",tf.keras.metrics.Recall()])

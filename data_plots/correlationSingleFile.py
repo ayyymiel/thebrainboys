@@ -52,6 +52,7 @@ def reformat(x):
 c=temp
 
 c = reformat(c)
+c=c.fillna(0)
 print(c,'\n')
 
 sn.heatmap(c, annot=True)

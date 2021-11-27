@@ -44,27 +44,28 @@ tf.keras.utils.normalize(X_train, axis=-1, order=2) #L2 norm
 model = Sequential()
 # 538,0.8666666746139526,128,64,32,32,64,128,512,512
 # 0.3916666805744171,32,128,128,32,32,32,256,512
+# 114,0.4208333194255829,128,64,32,64,32,128,512,512
 # 64, 32, 64, 32, 256, 256, 256, 256
 #conv layer
-model.add(Conv1D(32,  1, input_shape=X_train.shape[1:])) ##32 units, kernel size, input shape
+model.add(Conv1D(128,  1, input_shape=X_train.shape[1:])) ##32 units, kernel size, input shape
 model.add(Activation('relu'))
 
-model.add(Conv1D(128, 2))
-model.add(Activation('relu'))
-
-model.add(Conv1D(128, 1))
+model.add(Conv1D(64, 2))
 model.add(Activation('relu'))
 
 model.add(Conv1D(32, 1))
 model.add(Activation('relu'))
 
-model.add(Conv1D(32, 2))
+model.add(Conv1D(64, 1))
 model.add(Activation('relu'))
 
 model.add(Conv1D(32, 2))
 model.add(Activation('relu'))
 
-model.add(Conv1D(256, 2))
+model.add(Conv1D(128, 2))
+model.add(Activation('relu'))
+
+model.add(Conv1D(512, 2))
 model.add(Activation('relu'))
 
 model.add(Conv1D(512, 2))

@@ -17,8 +17,10 @@ from numpy import asarray
 from numpy import savetxt
 import matplotlib.pyplot as plt
 from matplotlib import style
+import joblib
 # import keyboard
 import _pickle as cPickle
+import lightgbm
 
 BoardShim.enable_dev_board_logger()
 
@@ -56,8 +58,10 @@ board = BoardShim(args.board_id, params)
 
 action = ["Backward", "Forward", "Left", "Right"]
 
-with open('SVMModel.pkl', 'rb') as fid:
-    clf = cPickle.load(fid)
+# with open('SVMModel.pkl', 'rb') as fid:
+#     clf = cPickle.load(fid)
+
+clf = joblib.load('./LGBMModel.joblib')
 
 board.prepare_session()
 board.start_stream(45000, args.streamer_params)  # ring buffer int
@@ -75,6 +79,16 @@ def main():
             DataFilter.write_file(data, name, 'w')  # use 'a' for append mode
             # Don't use latest brainflow version, it will cause grief: use 3.9.2
 
+            data = data[1:9, 100:800]
+            data = np.array(data).reshape(-1, 8, 700)
+            n_samples = len(data)
+            data = data.reshape((n_samples, -1))
+            scaler = MinMaxScaler()  # Default behavior is to scale to [0,1]
+            data = scaler.fit_transform(data)
+            prediction = clf.predict(data)
+            print("The action you are thinking is: ", prediction, " from data")
+
+
             x = np.loadtxt(name, delimiter=',')
             x = np.array(x)
 
@@ -87,7 +101,7 @@ def main():
             x = scaler.fit_transform(x)
             prediction = clf.predict(x)
 
-            print("The action you are thinking is: ", prediction)
+            print("The action you are thinking is: ", prediction, "from file")
 
         elif start == 'n':
             board.stop_stream()

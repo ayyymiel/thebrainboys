@@ -59,9 +59,9 @@ for i in range(1250):
 accuracies, l1, l2, l3, l4, l5, l6, l7, l8 = [], [], [], [], [], [], [], [], []
 # initialize model
 
-combinations = pd.read_csv('new_acc_2.csv')
-combinations = pd.DataFrame.to_numpy(combinations)
-combinations = np.ndarray.tolist(combinations)
+# combinations = pd.read_csv('new_acc_2.csv')
+# combinations = pd.DataFrame.to_numpy(combinations)
+# combinations = np.ndarray.tolist(combinations)
 # print(len(combinations))
 for i in range(len(combinations)):
 

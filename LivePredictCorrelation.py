@@ -35,7 +35,8 @@ def reformat(x):
 
 class OpenBCI:
     def __init__(self):
-        self.action = ["Backward", "Forward", "Left", "Other", "Right"]
+        # to_text.textbox("Trying to connect to board...")
+        self.action = ["Backward", "Forward", "Left", "Right"]
         BoardShim.enable_dev_board_logger()
 
         parser = argparse.ArgumentParser()
@@ -46,7 +47,7 @@ class OpenBCI:
         parser.add_argument('--ip-protocol', type=int, help='ip protocol, check IpProtocolType enum', required=False,
                             default=0)
         parser.add_argument('--ip-address', type=str, help='ip address', required=False, default='')
-        parser.add_argument('--serial-port', type=str, help='serial port', required=False, default='COM6')
+        parser.add_argument('--serial-port', type=str, help='serial port', required=False, default='COM5')
         parser.add_argument('--mac-address', type=str, help='mac address', required=False, default='')
         parser.add_argument('--other-info', type=str, help='other info', required=False, default='')
         parser.add_argument('--streamer-params', type=str, help='streamer params', required=False, default='')
@@ -73,6 +74,9 @@ class OpenBCI:
 
         self.board.start_stream(45000, args.streamer_params)  # ring buffer int
 
+        # to_text.textbox("Connected!")
+
+        # to_text.textbox("Connection failed.")
     def predict(self):
         time.sleep(5)  # time streamed in seconds
         data = self.board.get_board_data()  # this is a numpy.ndarray
@@ -80,12 +84,18 @@ class OpenBCI:
         self.board.stop_stream()
 
         data = data[1:9, 1:701]  # reshaping data into same format
-        data = np.array(data).reshape(-1, 8, 8)
+        data = data.transpose()
         data = reformat(data)
+        data = np.array(data).reshape(-1, 8, 8)
 
-        model = tf.keras.models.load_model("MODEL NAME")
+        model = tf.keras.models.load_model("CNN Corr.h5")
 
         prediction = model.predict(data)
 
         print("The action you are thinking is: ", prediction)
-        print("The action you are thinking is: ", self.action[np.argmax(prediction)])
+        # print("The action you are thinking is: ", self.action[np.argmax(prediction)])
+
+        # to_text.textbox(f'The action you are thinking is: {prediction}')
+
+bci = OpenBCI()
+bci.predict()

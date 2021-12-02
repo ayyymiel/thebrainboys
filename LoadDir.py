@@ -9,9 +9,9 @@ from sklearn.model_selection import StratifiedShuffleSplit
 
 #dir = 'C:/Users/Eric-/OneDrive/Desktop/Cap/pythonProject/ActionData/'
 #dir = 'C:/Users/Eric-/OneDrive/Desktop/Cap/pythonProject/ActionsData/'
-dir='ActionsData/'
+dir='NewJumbleData/'
 #categories = ["Back", "Forward", "Left", "Other", "Right"]
-categories = ["Backward", "Forward", "Left", "Other", "Right"]
+categories = ["JumbleBackward", "JumbleForward", "JumbleLeft", "JumbleRight"]
 
 
 trainingData=[]
@@ -25,20 +25,17 @@ def createTrainingData():
         for datas in os.listdir(path):
             actionData = DataFilter.read_file(os.path.join(path, datas))
             if(categories.index(category)==0): #back
-                trainingData.append([actionData, [1, 0, 0, 0, 0]])
+                trainingData.append([actionData, [1, 0, 0, 0]])
                 temp = actionData
 
             elif(categories.index(category)==1): #forward
-                trainingData.append([actionData, [0, 1, 0, 0, 0]])
+                trainingData.append([actionData, [0, 1, 0, 0]])
 
             elif(categories.index(category)==2): #left
-                trainingData.append([actionData, [0, 0, 1, 0, 0]])
-
-            elif(categories.index(category)==3): #other
-                trainingData.append([actionData, [0, 0, 0, 1, 0]])
+                trainingData.append([actionData, [0, 0, 1, 0]])
 
             elif(categories.index(category)==4): #right
-                trainingData.append([actionData, [0, 0, 0, 0, 1]])
+                trainingData.append([actionData, [0, 0, 0, 1]])
 
 """
 #testing if a file is too small 
@@ -56,7 +53,7 @@ y=[] #label
 
 for features, label in trainingData:
     #X.append(features[:,0:150])
-    X.append(features)
+    X.append(features[1:9, 0:700])
     y.append(label)
 
 """
@@ -73,18 +70,18 @@ for i in range(749):
 X=np.array(X).reshape(-1, 8, 700)
 
 
-np.save("Train&TestDataConvNet/X.npy", X)
-np.save("Train&TestDataConvNet/y.npy", y)
+np.save("X(new).npy", X)
+np.save("y(new).npy", y)
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.4, stratify=y)
 print(X_train.shape)
 print(X_test.shape)
 print (X[0].shape)
 #y=np.array(y).reshape(5)
-np.save("Train&TestDataConvNet/X_train.npy", X_train)
-np.save("Train&TestDataConvNet/y_train.npy", y_train)
+np.save("X_train(new).npy", X_train)
+np.save("y_train(new).npy", y_train)
 
-np.save("Train&TestDataConvNet/X_test.npy", X_test)
-np.save("Train&TestDataConvNet/y_test.npy", y_test)
+np.save("X_test(new).npy", X_test)
+np.save("y_test(new).npy", y_test)
 
 """
 

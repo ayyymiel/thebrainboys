@@ -30,7 +30,7 @@ parser.add_argument('--ip-protocol', type=int, help='ip protocol, check IpProtoc
                     default=0)
 parser.add_argument('--ip-address', type=str, help='ip address', required=False, default='')
 # parser.add_argument('--serial-port', type=str, help='serial port', required=False, default='/dev/cu.usbserial-DM0258P6')   # <- mac
-parser.add_argument('--serial-port', type=str, help='serial port', required=False, default='COM5') # <- windows
+parser.add_argument('--serial-port', type=str, help='serial port', required=False, default='COM3') # <- windows
 parser.add_argument('--mac-address', type=str, help='mac address', required=False, default='')
 parser.add_argument('--other-info', type=str, help='other info', required=False, default='')
 parser.add_argument('--streamer-params', type=str, help='streamer params', required=False, default='')
@@ -57,7 +57,7 @@ board = BoardShim(args.board_id, params)
 # with open('SVMModel.joblib', 'rb') as fid:
 #     clf = cPickle.load(fid)
 
-clf = joblib.load('./SVMModel.joblib')
+clf = joblib.load('./FFT SVMModel.joblib')
 
 board.prepare_session()
 
@@ -78,7 +78,6 @@ def main():
     data = scaler.fit_transform(data)
 
     prediction = clf.predict(data)
-
 
     print("The action you are thinking is: ", prediction)
     #print("The action you are thinking is: ", action[x])

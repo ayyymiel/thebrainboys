@@ -32,7 +32,7 @@ def start_connect():
     parser.add_argument('--ip-protocol', type=int, help='ip protocol, check IpProtocolType enum', required=False,
                         default=0)
     parser.add_argument('--ip-address', type=str, help='ip address', required=False, default='')
-    parser.add_argument('--serial-port', type=str, help='serial port', required=False, default='COM5')
+    parser.add_argument('--serial-port', type=str, help='serial port', required=False, default='COM3')
     parser.add_argument('--mac-address', type=str, help='mac address', required=False, default='')
     parser.add_argument('--other-info', type=str, help='other info', required=False, default='')
     parser.add_argument('--streamer-params', type=str, help='streamer params', required=False, default='')
@@ -58,49 +58,45 @@ def start_connect():
 
     action = ["Backward", "Forward", "Left", "Right"]
 
-    with open('SVMModel.pkl', 'rb') as fid:
-        clf = cPickle.load(fid)
+    # with open('SVMModel.pkl', 'rb') as fid:
+    #     clf = cPickle.load(fid)
+    clf = joblib.load('./FFT_KNNModel.joblib')
 
     board.prepare_session()
     board.start_stream(45000, args.streamer_params)  # ring buffer int
 
-def start_prediction():
-    while True:
-        start = input("Start? y/n/: ")
-        if start == 'y':
-            time.sleep(5)  # time streamed in seconds (+5)
-            # time.sleep(10)  # time streamed in seconds
+    time.sleep(5)  # time streamed in seconds (+5)
+    # time.sleep(10)  # time streamed in seconds
 
-            data = board.get_board_data()  # This is a numpy.ndarray
+    data = board.get_board_data()  # This is a numpy.ndarray
 
-            name=f"{int(time.time())}.npy"
-            DataFilter.write_file(data, name, 'w')  # use 'a' for append mode
-            # Don't use latest brainflow version, it will cause grief: use 3.9.2
+    name=f"{int(time.time())}.npy"
+    DataFilter.write_file(data, name, 'w')  # use 'a' for append mode
+    # Don't use latest brainflow version, it will cause grief: use 3.9.2
 
-            data = data[1:9, 100:800]
-            data = np.array(data).reshape(-1, 8, 700)
-            n_samples = len(data)
-            data = data.reshape((n_samples, -1))
-            scaler = MinMaxScaler()  # Default behavior is to scale to [0,1]
-            data = scaler.fit_transform(data)
-            prediction = clf.predict(data)
-            print("The action you are thinking is: ", prediction, " from data")
+    data = data[1:9, 100:800]
+    data = np.array(data).reshape(-1, 8, 700)
+    n_samples = len(data)
+    data = data.reshape((n_samples, -1))
+    scaler = MinMaxScaler()  # Default behavior is to scale to [0,1]
+    data = scaler.fit_transform(data)
+    prediction = clf.predict(data)
+    print("The action you are thinking is: ", prediction, " from data")
 
 
-            x = np.loadtxt(name, delimiter=',')
-            x = np.array(x)
+    x = np.loadtxt(name, delimiter=',')
+    x = np.array(x)
 
-            x = np.transpose(x)
-            x=x[1:9, 100:800]
-            x = np.array(x).reshape(-1, 8, 700)
-            n_samples = len(x)
-            x = x.reshape((n_samples, -1))
-            scaler = MinMaxScaler()  # Default behavior is to scale to [0,1]
-            x = scaler.fit_transform(x)
-            prediction = clf.predict(x)
+    x = np.transpose(x)
+    x=x[1:9, 100:800]
+    x = np.array(x).reshape(-1, 8, 700)
+    n_samples = len(x)
+    x = x.reshape((n_samples, -1))
+    scaler = MinMaxScaler()  # Default behavior is to scale to [0,1]
+    x = scaler.fit_transform(x)
+    prediction = clf.predict(x)
 
-            print("The action you are thinking is: ", prediction, "from file")
+    print("The action you are thinking is: ", prediction, "from file")
 
-        elif start == 'n':
-            board.stop_stream()
-            break
+
+start_connect()

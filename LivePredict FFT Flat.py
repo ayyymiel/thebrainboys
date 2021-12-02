@@ -16,6 +16,7 @@ from tensorflow.keras.models import load_model
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Dropout, Activation, Flatten, Conv1D, MaxPooling1D
 import pickle
+import joblib
 
 action = ["Backward", "Forward", "Left", "Other", "Right"]
 # ser = serial.Serial("COM4", 9600, timeout = 1) #Change your port name COM... and your baudrate
@@ -30,7 +31,7 @@ parser.add_argument('--ip-protocol', type=int, help='ip protocol, check IpProtoc
                     default=0)
 parser.add_argument('--ip-address', type=str, help='ip address', required=False, default='')
 # parser.add_argument('--serial-port', type=str, help='serial port', required=False, default='/dev/cu.usbserial-DM0258P6')   # <- mac
-parser.add_argument('--serial-port', type=str, help='serial port', required=False, default='COM5')  # <- windows
+parser.add_argument('--serial-port', type=str, help='serial port', required=False, default='COM3')  # <- windows
 parser.add_argument('--mac-address', type=str, help='mac address', required=False, default='')
 parser.add_argument('--other-info', type=str, help='other info', required=False, default='')
 parser.add_argument('--streamer-params', type=str, help='streamer params', required=False, default='')
@@ -57,8 +58,8 @@ board.prepare_session()
 
 board.start_stream(45000, args.streamer_params)  # ring buffer int
 
-model = tf.keras.models.load_model("FFT_KNNModel.joblib")
-
+# model = tf.keras.models.load_model("C:/Users/gozon/PycharmProjects/thebrainboys/FFT_KNNModel.joblib")
+model = joblib.load("C:/Users/gozon/PycharmProjects/thebrainboys/FFT SVMModel.joblib")
 
 def main():
     time.sleep(5)  # time streamed in seconds

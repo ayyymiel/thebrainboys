@@ -1,4 +1,6 @@
 from tkinter import *
+
+import numpy
 import serial
 import sys
 import threading
@@ -60,6 +62,8 @@ def start_gui():
 
         return correlation
 
+    arduino = ArduinoBot()
+
     class OpenBCI:
         def __init__(self):
             to_text.textbox("Trying to connect to board...\n")
@@ -92,7 +96,7 @@ def start_gui():
                 params.ip_port = args.ip_port
                 params.serial_port = args.serial_port
                 params.mac_address = args.mac_address
-                params.other_info = args.other_info
+                params.other_info = args.other_info 
                 params.serial_number = args.serial_number
                 params.ip_address = args.ip_address
                 params.ip_protocol = args.ip_protocol
@@ -108,11 +112,11 @@ def start_gui():
                 to_text.textbox("Connected!\n")
 
             except brainflow.board_shim.BrainFlowError:
-                to_text.textbox("Connection failed.\n")
+                to_text.textbox("OpenBCI Connection failed.\n")
 
         def predict(self):
             while True:
-                time.sleep(5)  # time streamed in seconds
+                time.sleep(7)  # time streamed in seconds
                 data = self.board.get_board_data()  # this is a numpy.ndarray
 
                 data = data[1:9, 1:701]  # reshaping data into same format
@@ -124,18 +128,15 @@ def start_gui():
                     model = tf.keras.models.load_model("CNN Corr.h5")
                     prediction = model.predict(data)
                     to_text.textbox(f'The action you are thinking is: {prediction}\n')
-
-                    high_predict = max(prediction)
-                    high_index = prediction.index(high_predict)
-                    bot = ArduinoBot()
+                    high_index = numpy.argmax(prediction)
                     if high_index == 0:
-                        bot.move_b()
+                        arduino.move_b()
                     elif high_index == 1:
-                        bot.move_f()
+                        arduino.move_f()
                     elif high_index == 2:
-                        bot.move_l()
+                        arduino.move_l()
                     elif high_index == 3:
-                        bot.move_r()
+                        arduino.move_r()
                 except OSError:
                     to_text.textbox("Error, model does not exist.")
 
@@ -146,7 +147,7 @@ def start_gui():
     t1 = threading.Thread(target=bci.predict)
 
     root = Tk()
-    root.geometry('760x275')
+    root.geometry('760x500')
     f1 = Frame(root)
     f1.grid(row=0, column=0)
     l = Label(f1, text="The Brain Boys", bg="red")
@@ -163,19 +164,19 @@ def start_gui():
     f2.grid(row=2, column=0, pady=20)
     l = Label(f2, text="Bot Control")
     l.grid(row=0, column=0, pady=5)
-    b = Button(f2, text="Connect", width=10, command=ArduinoBot)
+    b = Button(f2, text="Connect", width=10, command=arduino)
     b.grid(row=1, column=0)
-    b = Button(f2, text="Left", width=10, command=ArduinoBot.move_l)
+    b = Button(f2, text="Left", width=10, command=arduino.move_l)
     b.grid(row=2, column=0)
-    b = Button(f2, text="Right", width=10, command=ArduinoBot.move_r)
+    b = Button(f2, text="Right", width=10, command=arduino.move_r)
     b.grid(row=3, column=0)
-    b = Button(f2, text="Backward", width=10, command=ArduinoBot.move_b)
+    b = Button(f2, text="Backward", width=10, command=arduino.move_b)
     b.grid(row=4, column=0)
-    b = Button(f2, text="Forward", width=10, command=ArduinoBot.move_f)
+    b = Button(f2, text="Forward", width=10, command=arduino.move_f)
     b.grid(row=5, column=0)
     f3 = Frame(root)
     f3.grid(row=1, rowspan=5, column=2)
-    t = Text(f3, height=7, width=65)
+    t = Text(f3, height=15, width=65)
     t.grid(row=0, column=3)
 
     def redirector(input_str):

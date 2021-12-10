@@ -1,7 +1,6 @@
 # Capstone GUI
 # === Cannot run without prior connections ===
 from tkinter import *
-
 import numpy
 import serial
 import sys

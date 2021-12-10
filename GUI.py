@@ -1,3 +1,5 @@
+# Capstone GUI
+# === Cannot run without prior connections ===
 from tkinter import *
 
 import numpy
@@ -14,27 +16,27 @@ import pandas as pd
 import to_text
 
 
+class ArduinoBot:
+    def __init__(self):
+        self.ser = serial.Serial("COM4", 9600, timeout=1)
+
+    def move_b(self):
+        self.ser.write(b'b')
+
+    def move_f(self):
+        self.ser.write(b'f')
+
+    def move_l(self):
+        self.ser.write(b'l')
+
+    def move_r(self):
+        self.ser.write(b'r')
+
+
+arduino = ArduinoBot()
+
+
 def start_gui():
-
-    class ArduinoBot:
-        def __init__(self):
-            self.ser = serial.Serial("COM4", 9600, timeout=1)
-
-        def move_b(self):
-            self.ser.write(b'b')
-            t.insert(END, 'Moving backward\n')
-
-        def move_f(self):
-            self.ser.write(b'f')
-            t.insert(END, 'Moving forward\n')
-
-        def move_l(self):
-            self.ser.write(b'l')
-            t.insert(END, 'Moving left\n')
-
-        def move_r(self):
-            self.ser.write(b'r')
-            t.insert(END, 'Moving right\n')
 
     def reformat(x):
         c1, c2, c3, c4, c5, c6, c7, c8 = [], [], [], [], [], [], [], []
@@ -61,8 +63,6 @@ def start_gui():
         correlation = df.corr()
 
         return correlation
-
-    arduino = ArduinoBot()
 
     class OpenBCI:
         def __init__(self):
@@ -96,7 +96,7 @@ def start_gui():
                 params.ip_port = args.ip_port
                 params.serial_port = args.serial_port
                 params.mac_address = args.mac_address
-                params.other_info = args.other_info 
+                params.other_info = args.other_info
                 params.serial_number = args.serial_number
                 params.ip_address = args.ip_address
                 params.ip_protocol = args.ip_protocol
@@ -109,7 +109,7 @@ def start_gui():
 
                 self.board.start_stream(45000, args.streamer_params)  # ring buffer int
 
-                to_text.textbox("Connected!\n")
+                to_text.textbox("Connected to helmet!\n")
 
             except brainflow.board_shim.BrainFlowError:
                 to_text.textbox("OpenBCI Connection failed.\n")
@@ -131,12 +131,16 @@ def start_gui():
                     high_index = numpy.argmax(prediction)
                     if high_index == 0:
                         arduino.move_b()
+                        t.insert(END, 'Moving backward\n')
                     elif high_index == 1:
                         arduino.move_f()
+                        t.insert(END, 'Moving forward\n')
                     elif high_index == 2:
                         arduino.move_l()
+                        t.insert(END, 'Moving left\n')
                     elif high_index == 3:
                         arduino.move_r()
+                        t.insert(END, 'Moving right\n')
                 except OSError:
                     to_text.textbox("Error, model does not exist.")
 
@@ -185,6 +189,7 @@ def start_gui():
     sys.stdout.write = redirector
 
     root.mainloop()
+
 
 
 start_gui()

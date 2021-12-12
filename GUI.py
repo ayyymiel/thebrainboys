@@ -12,7 +12,7 @@ import brainflow
 from brainflow.board_shim import BoardShim, BrainFlowInputParams
 import tensorflow as tf
 import pandas as pd
-import to_text
+from archive import to_text
 
 
 class ArduinoBot:
